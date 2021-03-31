@@ -1,0 +1,10 @@
+fastapi[all]
+pydantic
+python-multipart
+python-jose
+passlib[bcrypt]
+fastapi-utils
+SQLAlchemy
+pip-tools
+alembic
+inflection
