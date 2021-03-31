@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {apiUrl} from '@/env';
-import {IUserProfile, IUserProfileCreate, IUserProfileUpdate} from './interfaces';
+import {IUserProfile, IUserProfileCreate, IUserProfileUpdate, IDataset} from './interfaces';
 
 function authHeaders(token: string) {
     return {
@@ -23,6 +23,9 @@ export const api = {
     },
     async updateMe(token: string, data: IUserProfileUpdate) {
         return axios.put<IUserProfile>(`${apiUrl}/api/v1/users/me`, data, authHeaders(token));
+    },
+    async getDatasets(token: string) {
+        return axios.get<IDataset[]>(`${apiUrl}/api/v1/datasets/`, authHeaders(token));
     },
     async getUsers(token: string) {
         return axios.get<IUserProfile[]>(`${apiUrl}/api/v1/users/`, authHeaders(token));

@@ -11,6 +11,7 @@
                 <v-btn to="/main/profile/view">View Profile</v-btn>
                 <v-btn to="/main/profile/edit">Edit Profile</v-btn>
                 <v-btn to="/main/profile/password">Change Password</v-btn>
+                <v-btn to="/main/datasets/view">View Datasets</v-btn>
             </v-card-actions>
         </v-card>
     </v-container>

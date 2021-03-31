@@ -12,12 +12,23 @@ import {
     commitSetLogInError,
     commitSetToken,
     commitSetUserProfile,
+    commitSetDatasets,
 } from './mutations';
 import {AppNotification, MainState} from './state';
 
 type MainContext = ActionContext<MainState, State>;
 
 export const actions = {
+    async actionGetDatasets(context: MainContext) {
+        try {
+            const response = await api.getDatasets(context.rootState.main.token);
+            if (response) {
+                commitSetDatasets(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
     async actionLogIn(context: MainContext, payload: { username: string; password: string }) {
         try {
             const response = await api.logInGetToken(payload.username, payload.password);
@@ -171,3 +182,4 @@ export const dispatchUpdateUserProfile = dispatch(actions.actionUpdateUserProfil
 export const dispatchRemoveNotification = dispatch(actions.removeNotification);
 export const dispatchPasswordRecovery = dispatch(actions.passwordRecovery);
 export const dispatchResetPassword = dispatch(actions.resetPassword);
+export const dispatchGetDatasets = dispatch(actions.actionGetDatasets);

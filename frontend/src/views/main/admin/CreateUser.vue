@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {IUserProfileCreate,} from '@/interfaces';
+import {IUserProfileCreate} from '@/interfaces';
 import {dispatchCreateUser, dispatchGetUsers} from '@/store/admin/actions';
 
 @Component

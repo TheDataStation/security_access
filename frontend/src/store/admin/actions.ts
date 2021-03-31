@@ -11,6 +11,7 @@ import {commitAddNotification, commitRemoveNotification} from '../main/mutations
 type MainContext = ActionContext<AdminState, State>;
 
 export const actions = {
+
     async actionGetUsers(context: MainContext) {
         try {
             const response = await api.getUsers(context.rootState.main.token);

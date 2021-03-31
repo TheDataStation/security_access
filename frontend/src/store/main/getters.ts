@@ -15,6 +15,7 @@ export const getters = {
     token: (state: MainState) => state.token,
     isLoggedIn: (state: MainState) => state.isLoggedIn,
     firstNotification: (state: MainState) => state.notifications.length > 0 && state.notifications[0],
+    datasets: (state: MainState) => state.datasets,
 };
 
 const {read} = getStoreAccessors<MainState, State>('');
@@ -25,5 +26,6 @@ export const readHasAdminAccess = read(getters.hasAdminAccess);
 export const readIsLoggedIn = read(getters.isLoggedIn);
 export const readLoginError = read(getters.loginError);
 export const readToken = read(getters.token);
+export const readDatasets = read(getters.datasets);
 export const readUserProfile = read(getters.userProfile);
 export const readFirstNotification = read(getters.firstNotification);

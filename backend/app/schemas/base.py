@@ -4,7 +4,7 @@ from pydantic import BaseModel, PrivateAttr
 
 
 class AllDBEntities(BaseModel):
-    _id: int = PrivateAttr()
+    id: int
     created_at: datetime.datetime
 
     class Config:

@@ -86,6 +86,29 @@ export default new Router({
                                 },
                             ],
                         },
+                        {
+                            path: 'datasets',
+                            component: () => import(/* webpackChunkName: "main-datasets" */ './views/main/datasets/Datasets.vue'),
+                            children: [
+                                // {
+                                //     path: 'datasets/all',
+                                //     component: () => import(
+                                //         /* webpackChunkName: "main-datasets-users" */ './views/main/datasets/DataSets.vue'),
+                                // },
+                                // {
+                                //     path: 'users/edit/:id',
+                                //     name: 'main-datasets-users-edit',
+                                //     component: () => import(
+                                //         /* webpackChunkName: "main-datasets-users-edit" */ './views/main/datasets/EditUser.vue'),
+                                // },
+                                // {
+                                //     path: 'users/create',
+                                //     name: 'main-datasets-users-create',
+                                //     component: () => import(
+                                //         /* webpackChunkName: "main-datasets-users-create" */ './views/main/datasets/CreateUser.vue'),
+                                // },
+                            ],
+                        },
                     ],
                 },
             ],

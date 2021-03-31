@@ -34,7 +34,6 @@ class CRUDQueryRequestsAccess(
                     _access_id=accessdb.id, _dataset_id=dataset_id
                 )
             )
-            x = super(CRUDQueryRequestsAccess, self).create(
+            return super(CRUDQueryRequestsAccess, self).create(
                 db, obj_in=obj_in, with_owner_id=accessdb.id
             )
-            return x

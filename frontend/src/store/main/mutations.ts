@@ -1,10 +1,13 @@
-import {IUserProfile} from '@/interfaces';
+import {IUserProfile, IDataset} from '@/interfaces';
 import {AppNotification, MainState} from './state';
 import {getStoreAccessors} from 'typesafe-vuex';
 import {State} from '../state';
 
 
 export const mutations = {
+    setDatasets(state: MainState, payload: IDataset[]) {
+        state.datasets = payload;
+    },
     setToken(state: MainState, payload: string) {
         state.token = payload;
     },
@@ -39,5 +42,6 @@ export const commitSetLoggedIn = commit(mutations.setLoggedIn);
 export const commitSetLogInError = commit(mutations.setLogInError);
 export const commitSetToken = commit(mutations.setToken);
 export const commitSetUserProfile = commit(mutations.setUserProfile);
+export const commitSetDatasets = commit(mutations.setDatasets);
 export const commitAddNotification = commit(mutations.addNotification);
 export const commitRemoveNotification = commit(mutations.removeNotification);

@@ -62,6 +62,8 @@ class Url(Base, AllEntities):
 
 
 class Dataset(Base, AllEntities):
+    title = Column(String, index=True)
+    description = Column(String, index=True)
     sharer_id = Column(Integer, ForeignKey("sharer.id"), nullable=False)
 
 

@@ -2,13 +2,9 @@ from app import schemas
 from app.db import models
 from .base import CRUDBase
 from .user import CRUDUser
+from .dataset import CRUDDataset
+from ..db.models import Dataset
 
-url = CRUDBase[models.Url, schemas.Url, schemas.Url](
-    models.Url, owner_attr="dataset_id"
-)
-dataset = CRUDBase[models.Dataset, schemas.DatasetCreate, schemas.DatasetUpdate](
-    models.Dataset, owner_attr="sharer_id"
-)
 access = CRUDBase[models.Access, schemas.AccessCreate, schemas.AccessUpdate](
     models.Access, owner_attr="sharer_id"
 )
@@ -29,3 +25,4 @@ query_uses_dataset = CRUDBase[
     schemas.QueryUsesDataset,
     schemas.QueryUsesDataset,
 ](models.QueryUsesDataset)
+dataset = CRUDDataset(Dataset)
