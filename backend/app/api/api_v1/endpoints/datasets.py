@@ -8,6 +8,7 @@ import app.crud.dataset
 from app import crud, schemas
 from app.db import models
 from app.api import deps
+from app.utils import row2dict
 
 router = APIRouter()
 
@@ -23,12 +24,15 @@ def read_datasets(
     Retrieve datasets.
     """
     if crud.user.is_superuser(current_user):
-        datasets = app.crud.dataset.get_multi(db, skip=skip, limit=limit)
+        datasets_url_ids = app.crud.dataset.get_multi(db, skip=skip, limit=limit)
     else:
-        datasets = app.crud.dataset.get_multi(
+        datasets_url_ids = app.crud.dataset.get_multi(
             db=db, with_owner_id=current_user.id, skip=skip, limit=limit
         )
-    return datasets
+    return [
+        schemas.Dataset(**row2dict(dataset), url_ids=url_ids)
+        for dataset, url_ids in datasets_url_ids
+    ]
 
 
 @router.post("/", response_model=schemas.Dataset)
@@ -41,8 +45,10 @@ def create_dataset(
     """
     Create new dataset.
     """
-    dataset = app.crud.dataset.create(db=db, obj_in=dataset_in, with_owner_id=current_user.id)
-    return dataset
+    dataset, url_ids = app.crud.dataset.create(
+        db=db, obj_in=dataset_in, with_owner_id=current_user.id
+    )
+    return schemas.Dataset(**row2dict(dataset), url_ids=url_ids)
 
 
 @router.put("/{id}", response_model=schemas.Dataset)
@@ -59,7 +65,9 @@ def update_dataset(
     dataset = app.crud.dataset.get(db=db, id=id)
     if not dataset:
         raise HTTPException(status_code=404, detail="Dataset not found")
-    if not crud.user.is_superuser(current_user) and (dataset.sharer_id != current_user.id):
+    if not crud.user.is_superuser(current_user) and (
+        dataset.sharer_id != current_user.id
+    ):
         raise HTTPException(status_code=400, detail="Not enough permissions")
     dataset = app.crud.dataset.update(db=db, db_obj=dataset, obj_in=dataset_in)
     return dataset
@@ -78,7 +86,9 @@ def read_dataset(
     dataset = app.crud.dataset.get(db=db, id=id)
     if not dataset:
         raise HTTPException(status_code=404, detail="Dataset not found")
-    if not crud.user.is_superuser(current_user) and (dataset.sharer_id != current_user.id):
+    if not crud.user.is_superuser(current_user) and (
+        dataset.sharer_id != current_user.id
+    ):
         raise HTTPException(status_code=400, detail="Not enough permissions")
     return dataset
 
@@ -96,7 +106,9 @@ def delete_dataset(
     dataset = app.crud.dataset.get(db=db, id=id)
     if not dataset:
         raise HTTPException(status_code=404, detail="Dataset not found")
-    if not crud.user.is_superuser(current_user) and (dataset.sharer_id != current_user.id):
+    if not crud.user.is_superuser(current_user) and (
+        dataset.sharer_id != current_user.id
+    ):
         raise HTTPException(status_code=400, detail="Not enough permissions")
     dataset = app.crud.dataset.remove(db=db, id=id)
     return dataset

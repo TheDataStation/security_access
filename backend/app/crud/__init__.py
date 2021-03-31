@@ -2,7 +2,7 @@ from app import schemas
 from app.db import models
 from .base import CRUDBase
 from .user import CRUDUser
-from .dataset import CRUDDataset
+from .dataset import CRUDDataset, url
 from ..db.models import Dataset
 
 access = CRUDBase[models.Access, schemas.AccessCreate, schemas.AccessUpdate](

@@ -9,15 +9,10 @@
         </v-toolbar>
         <v-data-table :headers="headers" :items="datasets">
             <template slot="items" slot-scope="props">
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.email }}</td>
-                <td>{{ props.item.full_name }}</td>
-<!--                <td>-->
-<!--                    <v-icon v-if="props.item.is_active">checkmark</v-icon>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <v-icon v-if="props.item.is_superdataset">checkmark</v-icon>-->
-<!--                </td>-->
+                <td>{{ props.item.created_at | dateParse('YYYY-MM-DDTHH:mm:ss') | dateFormat('YYYY-MM-DD') }}</td>
+                <td>{{ props.item.title }}</td>
+                <td>{{ props.item.description }}</td>
+                <td>{{ props.item.url_ids }}</td>
                 <td class="justify-center layout px-0">
                     <v-tooltip top>
                         <span>Edit</span>
@@ -40,38 +35,28 @@ import {dispatchGetDatasets} from '@/store/main/actions';
 export default class Datasets extends Vue {
     public headers = [
         {
-            text: 'Name',
+            text: 'Created at',
             sortable: true,
-            value: 'name',
+            value: 'created_at',
             align: 'left',
         },
         {
-            text: 'Email',
+            text: 'Title',
             sortable: true,
-            value: 'email',
+            value: 'title',
             align: 'left',
         },
         {
-            text: 'Full Name',
+            text: 'Description',
             sortable: true,
-            value: 'full_name',
+            value: 'description',
             align: 'left',
         },
         {
-            text: 'Is Active',
+            text: 'URL IDs',
             sortable: true,
-            value: 'isActive',
+            value: 'url_ids',
             align: 'left',
-        },
-        {
-            text: 'Is Superdataset',
-            sortable: true,
-            value: 'isSuperdataset',
-            align: 'left',
-        },
-        {
-            text: 'Actions',
-            value: 'id',
         },
     ];
 

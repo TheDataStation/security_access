@@ -1,5 +1,6 @@
 interface Base {
     id: number;
+    created_at: string;
 }
 
 export interface IUserProfile extends Base {
@@ -28,12 +29,11 @@ export interface IUserProfileCreate {
 interface DatasetBase {
     title?: string;
     description?: string;
-    url_ids?: number[];
 }
 
 export interface IDatasetCreate extends DatasetBase {
     title: string;
-    url_ids: number[];
+    data: string[];
 }
 
 export interface IDatasetUpdate extends DatasetBase {
@@ -42,8 +42,7 @@ export interface IDatasetUpdate extends DatasetBase {
 
 export interface IDataset extends DatasetBase, Base {
     title: string;
-    description?: string;
-    urls: number[];
+    url_ids: number[];
 }
 
 
