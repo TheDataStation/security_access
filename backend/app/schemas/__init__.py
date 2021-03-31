@@ -1,4 +1,5 @@
 from .token import Token, TokenPayload
+
 # from .user import User, UserCreate, UserInDB, UserUpdate
 
 from .access import (
@@ -22,5 +23,3 @@ from .query import (
 )
 from .user import User, UserCreate, UserUpdate
 from .message import Message
-
-

@@ -6,7 +6,6 @@ from fastapi_utils.enums import StrEnum
 from pydantic import BaseModel, PrivateAttr
 
 
-
 class AccessDecision(StrEnum):
     yes = auto()
     no = auto()

@@ -28,6 +28,7 @@ class UserUpdate(UserBase):
 class UserInDBBase(UserBase, AllDBEntities):
     pass
 
+
 # Additional properties to return via API
 class User(UserInDBBase):
     pass

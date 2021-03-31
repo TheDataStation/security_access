@@ -7,23 +7,23 @@
             <v-flex>
               <div class="text-xs-center">
                 <div class="headline my-5">Loading...</div>
-                <v-progress-circular size="100" indeterminate color="primary"></v-progress-circular>
+                <v-progress-circular color="primary" indeterminate size="100"></v-progress-circular>
               </div>
             </v-flex>
           </v-layout>
         </v-container>
       </v-content>
-      <router-view v-else />
+      <router-view v-else/>
       <NotificationsManager></NotificationsManager>
     </v-app>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 import NotificationsManager from '@/components/NotificationsManager.vue';
-import { readIsLoggedIn } from '@/store/main/getters';
-import { dispatchCheckLoggedIn } from '@/store/main/actions';
+import {readIsLoggedIn} from '@/store/main/getters';
+import {dispatchCheckLoggedIn} from '@/store/main/actions';
 
 @Component({
   components: {

@@ -33,6 +33,11 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     print(get_password_hash("max"))
-    print(verify_password("max", "$2b$12$.okgBl1NutuA4hWiJtAlgOwcOCSDJoV.JglLGMFRCxFr3JODVjH/2"))
+    print(
+        verify_password(
+            "max", "$2b$12$.okgBl1NutuA4hWiJtAlgOwcOCSDJoV.JglLGMFRCxFr3JODVjH/2"
+        )
+    )

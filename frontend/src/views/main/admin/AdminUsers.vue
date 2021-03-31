@@ -12,12 +12,16 @@
         <td>{{ props.item.name }}</td>
         <td>{{ props.item.email }}</td>
         <td>{{ props.item.full_name }}</td>
-        <td><v-icon v-if="props.item.is_active">checkmark</v-icon></td>
-        <td><v-icon v-if="props.item.is_superuser">checkmark</v-icon></td>
+        <td>
+          <v-icon v-if="props.item.is_active">checkmark</v-icon>
+        </td>
+        <td>
+          <v-icon v-if="props.item.is_superuser">checkmark</v-icon>
+        </td>
         <td class="justify-center layout px-0">
           <v-tooltip top>
             <span>Edit</span>
-            <v-btn slot="activator" flat :to="{name: 'main-admin-users-edit', params: {id: props.item.id}}">
+            <v-btn slot="activator" :to="{name: 'main-admin-users-edit', params: {id: props.item.id}}" flat>
               <v-icon>edit</v-icon>
             </v-btn>
           </v-tooltip>
@@ -28,11 +32,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { Store } from 'vuex';
-import { IUserProfile } from '@/interfaces';
-import { readAdminUsers } from '@/store/admin/getters';
-import { dispatchGetUsers } from '@/store/admin/actions';
+import {Component, Vue} from 'vue-property-decorator';
+import {readAdminUsers} from '@/store/admin/getters';
+import {dispatchGetUsers} from '@/store/admin/actions';
 
 @Component
 export default class AdminUsers extends Vue {
@@ -72,6 +74,7 @@ export default class AdminUsers extends Vue {
       value: 'id',
     },
   ];
+
   get users() {
     return readAdminUsers(this.$store);
   }

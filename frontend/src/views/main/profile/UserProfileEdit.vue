@@ -7,23 +7,23 @@
       <v-card-text>
         <template>
           <v-form
-            v-model="valid"
-            ref="form"
-            lazy-validation
+              ref="form"
+              v-model="valid"
+              lazy-validation
           >
             <v-text-field
-              label="Full Name"
-              v-model="fullName"
-              required
+                v-model="fullName"
+                label="Full Name"
+                required
             ></v-text-field>
             <v-text-field
-              label="E-mail"
-              type="email"
-              v-model="email"
-              v-validate="'required|email'"
-              data-vv-name="email"
-              :error-messages="errors.collect('email')"
-              required
+                v-model="email"
+                v-validate="'required|email'"
+                :error-messages="errors.collect('email')"
+                data-vv-name="email"
+                label="E-mail"
+                required
+                type="email"
             ></v-text-field>
           </v-form>
         </template>
@@ -33,8 +33,8 @@
         <v-btn @click="cancel">Cancel</v-btn>
         <v-btn @click="reset">Reset</v-btn>
         <v-btn
-          @click="submit"
-          :disabled="!valid"
+            :disabled="!valid"
+            @click="submit"
         >
           Save
         </v-btn>
@@ -44,11 +44,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { Store } from 'vuex';
-import { IUserProfileUpdate } from '@/interfaces';
-import { readUserProfile } from '@/store/main/getters';
-import { dispatchUpdateUserProfile } from '@/store/main/actions';
+import {Component, Vue} from 'vue-property-decorator';
+import {IUserProfileUpdate} from '@/interfaces';
+import {readUserProfile} from '@/store/main/getters';
+import {dispatchUpdateUserProfile} from '@/store/main/actions';
 
 @Component
 export default class UserProfileEdit extends Vue {
@@ -56,16 +55,16 @@ export default class UserProfileEdit extends Vue {
   public fullName: string = '';
   public email: string = '';
 
+  get userProfile() {
+    return readUserProfile(this.$store);
+  }
+
   public created() {
     const userProfile = readUserProfile(this.$store);
     if (userProfile) {
       this.fullName = userProfile.full_name;
       this.email = userProfile.email;
     }
-  }
-
-  get userProfile() {
-    return readUserProfile(this.$store);
   }
 
   public reset() {

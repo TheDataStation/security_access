@@ -42,6 +42,7 @@ class QueryCreate(QueryBase):
 class QueryUpdate(QueryBase):
     pass
 
+
 class Query(QueryBase):
     pass
 

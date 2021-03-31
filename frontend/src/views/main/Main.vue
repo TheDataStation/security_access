@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer persistent :mini-variant="miniDrawer" v-model="showDrawer" fixed app>
+    <v-navigation-drawer v-model="showDrawer" :mini-variant="miniDrawer" app fixed persistent>
       <v-layout column fill-height>
         <v-list>
           <v-subheader>Main menu</v-subheader>
@@ -38,7 +38,7 @@
           </v-list-tile>
         </v-list>
         <v-divider></v-divider>
-        <v-list subheader v-show="hasAdminAccess">
+        <v-list v-show="hasAdminAccess" subheader>
           <v-subheader>Admin</v-subheader>
           <v-list-tile to="/main/admin/users/all">
             <v-list-tile-action>
@@ -79,7 +79,7 @@
         </v-list>
       </v-layout>
     </v-navigation-drawer>
-    <v-toolbar dark color="primary" app>
+    <v-toolbar app color="primary" dark>
       <v-toolbar-side-icon @click.stop="switchShowDrawer"></v-toolbar-side-icon>
       <v-toolbar-title v-text="appName"></v-toolbar-title>
       <v-spacer></v-spacer>
@@ -110,20 +110,20 @@
     <v-content>
       <router-view></router-view>
     </v-content>
-    <v-footer class="pa-3" fixed app>
+    <v-footer app class="pa-3" fixed>
       <v-spacer></v-spacer>
-      <span>&copy; {{appName}}</span>
+      <span>&copy; {{ appName }}</span>
     </v-footer>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 
-import { appName } from '@/env';
-import { readDashboardMiniDrawer, readDashboardShowDrawer, readHasAdminAccess } from '@/store/main/getters';
-import { commitSetDashboardShowDrawer, commitSetDashboardMiniDrawer } from '@/store/main/mutations';
-import { dispatchUserLogOut } from '@/store/main/actions';
+import {appName} from '@/env';
+import {readDashboardMiniDrawer, readDashboardShowDrawer, readHasAdminAccess} from '@/store/main/getters';
+import {commitSetDashboardMiniDrawer, commitSetDashboardShowDrawer} from '@/store/main/mutations';
+import {dispatchUserLogOut} from '@/store/main/actions';
 
 const routeGuardMain = async (to, from, next) => {
   if (to.path === '/main') {
@@ -137,14 +137,6 @@ const routeGuardMain = async (to, from, next) => {
 export default class Main extends Vue {
   public appName = appName;
 
-  public beforeRouteEnter(to, from, next) {
-    routeGuardMain(to, from, next);
-  }
-
-  public beforeRouteUpdate(to, from, next) {
-    routeGuardMain(to, from, next);
-  }
-
   get miniDrawer() {
     return readDashboardMiniDrawer(this.$store);
   }
@@ -157,22 +149,30 @@ export default class Main extends Vue {
     commitSetDashboardShowDrawer(this.$store, value);
   }
 
+  public get hasAdminAccess() {
+    return readHasAdminAccess(this.$store);
+  }
+
+  public beforeRouteEnter(to, from, next) {
+    routeGuardMain(to, from, next);
+  }
+
+  public beforeRouteUpdate(to, from, next) {
+    routeGuardMain(to, from, next);
+  }
+
   public switchShowDrawer() {
     commitSetDashboardShowDrawer(
-      this.$store,
-      !readDashboardShowDrawer(this.$store),
+        this.$store,
+        !readDashboardShowDrawer(this.$store),
     );
   }
 
   public switchMiniDrawer() {
     commitSetDashboardMiniDrawer(
-      this.$store,
-      !readDashboardMiniDrawer(this.$store),
+        this.$store,
+        !readDashboardMiniDrawer(this.$store),
     );
-  }
-
-  public get hasAdminAccess() {
-    return readHasAdminAccess(this.$store);
   }
 
   public async logout() {

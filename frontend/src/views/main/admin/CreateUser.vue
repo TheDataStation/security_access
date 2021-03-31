@@ -6,18 +6,26 @@
       </v-card-title>
       <v-card-text>
         <template>
-          <v-form v-model="valid" ref="form" lazy-validation>
-            <v-text-field label="Full Name" v-model="fullName" required></v-text-field>
-            <v-text-field label="E-mail" type="email" v-model="email" v-validate="'required|email'" data-vv-name="email" :error-messages="errors.collect('email')" required></v-text-field>
-            <div class="subheading secondary--text text--lighten-2">User is superuser <span v-if="isSuperuser">(currently is a superuser)</span><span v-else>(currently is not a superuser)</span></div>
-            <v-checkbox label="Is Superuser" v-model="isSuperuser"></v-checkbox>
-            <div class="subheading secondary--text text--lighten-2">User is active <span v-if="isActive">(currently active)</span><span v-else>(currently not active)</span></div>
-            <v-checkbox label="Is Active" v-model="isActive"></v-checkbox>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field v-model="fullName" label="Full Name" required></v-text-field>
+            <v-text-field v-model="email" v-validate="'required|email'" :error-messages="errors.collect('email')" data-vv-name="email" label="E-mail"
+                          required type="email"></v-text-field>
+            <div class="subheading secondary--text text--lighten-2">User is superuser <span v-if="isSuperuser">(currently is a superuser)</span><span
+                v-else>(currently is not a superuser)</span></div>
+            <v-checkbox v-model="isSuperuser" label="Is Superuser"></v-checkbox>
+            <div class="subheading secondary--text text--lighten-2">User is active <span v-if="isActive">(currently active)</span><span
+                v-else>(currently not active)</span></div>
+            <v-checkbox v-model="isActive" label="Is Active"></v-checkbox>
             <v-layout align-center>
               <v-flex>
-                <v-text-field type="password" ref="password" label="Set Password" data-vv-name="password" data-vv-delay="100" v-validate="{required: true}" v-model="password1" :error-messages="errors.first('password')">
+                <v-text-field ref="password" v-model="password1" v-validate="{required: true}" :error-messages="errors.first('password')"
+                              data-vv-delay="100" data-vv-name="password" label="Set Password"
+                              type="password">
                 </v-text-field>
-                <v-text-field type="password" label="Confirm Password" data-vv-name="password_confirmation" data-vv-delay="100" data-vv-as="password" v-validate="{required: true, confirmed: 'password'}" v-model="password2" :error-messages="errors.first('password_confirmation')">
+                <v-text-field v-model="password2" v-validate="{required: true, confirmed: 'password'}" :error-messages="errors.first('password_confirmation')"
+                              data-vv-as="password" data-vv-delay="100"
+                              data-vv-name="password_confirmation" label="Confirm Password"
+                              type="password">
                 </v-text-field>
               </v-flex>
             </v-layout>
@@ -28,22 +36,18 @@
         <v-spacer></v-spacer>
         <v-btn @click="cancel">Cancel</v-btn>
         <v-btn @click="reset">Reset</v-btn>
-        <v-btn @click="submit" :disabled="!valid">
-              Save
-            </v-btn>
+        <v-btn :disabled="!valid" @click="submit">
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import {
-  IUserProfile,
-  IUserProfileUpdate,
-  IUserProfileCreate,
-} from '@/interfaces';
-import { dispatchGetUsers, dispatchCreateUser } from '@/store/admin/actions';
+import {Component, Vue} from 'vue-property-decorator';
+import {IUserProfileCreate,} from '@/interfaces';
+import {dispatchCreateUser, dispatchGetUsers} from '@/store/admin/actions';
 
 @Component
 export default class CreateUser extends Vue {

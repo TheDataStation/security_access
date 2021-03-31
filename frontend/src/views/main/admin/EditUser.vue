@@ -9,73 +9,77 @@
           <div class="my-3">
             <div class="subheading secondary--text text--lighten-2">Username</div>
             <div
-              class="title primary--text text--darken-2"
-              v-if="user"
-            >{{user.email}}</div>
+                v-if="user"
+                class="title primary--text text--darken-2"
+            >{{ user.email }}
+            </div>
             <div
-              class="title primary--text text--darken-2"
-              v-else
-            >-----</div>
+                v-else
+                class="title primary--text text--darken-2"
+            >-----
+            </div>
           </div>
           <v-form
-            v-model="valid"
-            ref="form"
-            lazy-validation
+              ref="form"
+              v-model="valid"
+              lazy-validation
           >
             <v-text-field
-              label="Full Name"
-              v-model="fullName"
-              required
+                v-model="fullName"
+                label="Full Name"
+                required
             ></v-text-field>
             <v-text-field
-              label="E-mail"
-              type="email"
-              v-model="email"
-              v-validate="'required|email'"
-              data-vv-name="email"
-              :error-messages="errors.collect('email')"
-              required
+                v-model="email"
+                v-validate="'required|email'"
+                :error-messages="errors.collect('email')"
+                data-vv-name="email"
+                label="E-mail"
+                required
+                type="email"
             ></v-text-field>
-            <div class="subheading secondary--text text--lighten-2">User is superuser <span v-if="isSuperuser">(currently is a superuser)</span><span v-else>(currently is not a superuser)</span></div>
+            <div class="subheading secondary--text text--lighten-2">User is superuser <span v-if="isSuperuser">(currently is a superuser)</span><span
+                v-else>(currently is not a superuser)</span></div>
             <v-checkbox
-              label="Is Superuser"
-              v-model="isSuperuser"
+                v-model="isSuperuser"
+                label="Is Superuser"
             ></v-checkbox>
-            <div class="subheading secondary--text text--lighten-2">User is active <span v-if="isActive">(currently active)</span><span v-else>(currently not active)</span></div>
+            <div class="subheading secondary--text text--lighten-2">User is active <span v-if="isActive">(currently active)</span><span
+                v-else>(currently not active)</span></div>
             <v-checkbox
-              label="Is Active"
-              v-model="isActive"
+                v-model="isActive"
+                label="Is Active"
             ></v-checkbox>
             <v-layout align-center>
               <v-flex shrink>
                 <v-checkbox
-                  v-model="setPassword"
-                  class="mr-2"
+                    v-model="setPassword"
+                    class="mr-2"
                 ></v-checkbox>
               </v-flex>
               <v-flex>
                 <v-text-field
-                  :disabled="!setPassword"
-                  type="password"
-                  ref="password"
-                  label="Set Password"
-                  data-vv-name="password"
-                  data-vv-delay="100"
-                  v-validate="{required: setPassword}"
-                  v-model="password1"
-                  :error-messages="errors.first('password')"
+                    ref="password"
+                    v-model="password1"
+                    v-validate="{required: setPassword}"
+                    :disabled="!setPassword"
+                    :error-messages="errors.first('password')"
+                    data-vv-delay="100"
+                    data-vv-name="password"
+                    label="Set Password"
+                    type="password"
                 >
                 </v-text-field>
                 <v-text-field
-                  v-show="setPassword"
-                  type="password"
-                  label="Confirm Password"
-                  data-vv-name="password_confirmation"
-                  data-vv-delay="100"
-                  data-vv-as="password"
-                  v-validate="{required: setPassword, confirmed: 'password'}"
-                  v-model="password2"
-                  :error-messages="errors.first('password_confirmation')"
+                    v-show="setPassword"
+                    v-model="password2"
+                    v-validate="{required: setPassword, confirmed: 'password'}"
+                    :error-messages="errors.first('password_confirmation')"
+                    data-vv-as="password"
+                    data-vv-delay="100"
+                    data-vv-name="password_confirmation"
+                    label="Confirm Password"
+                    type="password"
                 >
                 </v-text-field>
               </v-flex>
@@ -88,8 +92,8 @@
         <v-btn @click="cancel">Cancel</v-btn>
         <v-btn @click="reset">Reset</v-btn>
         <v-btn
-          @click="submit"
-          :disabled="!valid"
+            :disabled="!valid"
+            @click="submit"
         >
           Save
         </v-btn>
@@ -99,10 +103,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { IUserProfile, IUserProfileUpdate } from '@/interfaces';
-import { dispatchGetUsers, dispatchUpdateUser } from '@/store/admin/actions';
-import { readAdminOneUser } from '@/store/admin/getters';
+import {Component, Vue} from 'vue-property-decorator';
+import {IUserProfileUpdate} from '@/interfaces';
+import {dispatchGetUsers, dispatchUpdateUser} from '@/store/admin/actions';
+import {readAdminOneUser} from '@/store/admin/getters';
 
 @Component
 export default class EditUser extends Vue {
@@ -114,6 +118,10 @@ export default class EditUser extends Vue {
   public setPassword = false;
   public password1: string = '';
   public password2: string = '';
+
+  get user() {
+    return readAdminOneUser(this.$store)(+this.$router.currentRoute.params.id);
+  }
 
   public async mounted() {
     await dispatchGetUsers(this.$store);
@@ -151,13 +159,9 @@ export default class EditUser extends Vue {
       if (this.setPassword) {
         updatedProfile.password = this.password1;
       }
-      await dispatchUpdateUser(this.$store, { id: this.user!.id, user: updatedProfile });
+      await dispatchUpdateUser(this.$store, {id: this.user!.id, user: updatedProfile});
       this.$router.push('/main/admin/users');
     }
-  }
-
-  get user() {
-    return readAdminOneUser(this.$store)(+this.$router.currentRoute.params.id);
   }
 }
 </script>
