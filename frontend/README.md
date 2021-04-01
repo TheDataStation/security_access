@@ -29,3 +29,6 @@ npm run lint
 ```
 npm run test:unit
 ```
+
+
+ npx swagger-typescript-api -p ../backend/docs/openapi.json -n api.ts

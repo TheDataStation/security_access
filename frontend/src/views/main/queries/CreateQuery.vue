@@ -53,6 +53,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
+import {IDatasetCreate} from '@/interfaces';
 import {dispatchCreateDataset, dispatchGetDatasets} from '@/store/main/actions';
 
 // Import Vue FilePond
@@ -61,7 +62,7 @@ import {setOptions} from "filepond";
 
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
-import {Api} from '@/api';
+import {api} from '@/api';
 import {readToken} from "@/store/main/getters";
 import {store} from '@/store'
 import UploadButton from "@/components/UploadButton.vue";

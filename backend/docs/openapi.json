@@ -698,10 +698,92 @@
           }
         ]
       }
+    },
+    "/api/v1/datasets/file/": {
+      "post": {
+        "tags": [
+          "datasets"
+        ],
+        "summary": "Create File",
+        "operationId": "create_file_api_v1_datasets_file__post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_file_api_v1_datasets_file__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "datasets"
+        ],
+        "summary": "Delete File",
+        "operationId": "delete_file_api_v1_datasets_file__delete",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/File"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
+      "Body_create_file_api_v1_datasets_file__post": {
+        "title": "Body_create_file_api_v1_datasets_file__post",
+        "required": [
+          "file"
+        ],
+        "type": "object",
+        "properties": {
+          "file": {
+            "title": "File",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
       "Body_create_user_open_api_v1_users_open_post": {
         "title": "Body_create_user_open_api_v1_users_open_post",
         "required": [
@@ -803,7 +885,8 @@
         "required": [
           "id",
           "created_at",
-          "url_ids"
+          "title",
+          "file_ids"
         ],
         "type": "object",
         "properties": {
@@ -824,8 +907,8 @@
             "title": "Description",
             "type": "string"
           },
-          "url_ids": {
-            "title": "Url Ids",
+          "file_ids": {
+            "title": "File Ids",
             "type": "array",
             "items": {
               "type": "integer"
@@ -837,7 +920,7 @@
         "title": "DatasetCreate",
         "required": [
           "title",
-          "data"
+          "file_ids"
         ],
         "type": "object",
         "properties": {
@@ -849,11 +932,11 @@
             "title": "Description",
             "type": "string"
           },
-          "data": {
-            "title": "Data",
+          "file_ids": {
+            "title": "File Ids",
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "integer"
             }
           }
         }
@@ -868,6 +951,30 @@
           },
           "description": {
             "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "File": {
+        "title": "File",
+        "required": [
+          "id",
+          "created_at",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "title": "Name",
             "type": "string"
           }
         }
