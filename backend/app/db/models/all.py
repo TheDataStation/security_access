@@ -13,7 +13,6 @@ from sqlalchemy import (
     PrimaryKeyConstraint,
 )
 from sqlalchemy.dialects.sqlite import JSON, BLOB
-
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
 
 from app.db.session import engine
@@ -40,35 +39,25 @@ class User(Base, AllEntities):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
-    is_superuser = Column(Boolean(), default=False)
+    is_operator = Column(Boolean(), default=False)
     full_name = Column(String, index=True)
 
 
-class Querier(User):
-    id = Column(Integer, ForeignKey("user.id"), primary_key=True, nullable=False)
-
-
-class Sharer(User):
-    id = Column(Integer, ForeignKey("user.id"), primary_key=True, nullable=False)
-
-
-class Operator(User):
-    id = Column(Integer, ForeignKey("user.id"), primary_key=True, nullable=False)
-
-
-class Url(Base, AllEntities):
+class File(Base, AllEntities):
     url = Column(String, unique=True, index=True)
-    dataset_id = Column(Integer, ForeignKey("dataset.id"), nullable=False)
+    name = Column(String, index=True)
+    dataset_id = Column(Integer, ForeignKey("dataset.id"))
+    sharer_id = Column(Integer, ForeignKey("user.id"), nullable=False)
 
 
 class Dataset(Base, AllEntities):
     title = Column(String, index=True)
     description = Column(String, index=True)
-    sharer_id = Column(Integer, ForeignKey("sharer.id"), nullable=False)
+    sharer_id = Column(Integer, ForeignKey("user.id"), nullable=False)
 
 
 class Query(Base, AllEntities):
-    querier_id = Column(Integer, ForeignKey("querier.id"), nullable=False)
+    querier_id = Column(Integer, ForeignKey("user.id"), nullable=False)
     status = Column(
         String,
         CheckConstraint("status IN ('pending', 'started','succeeded','failed')"),
@@ -116,7 +105,7 @@ class Access(Base, AllEntities):
         ),
     )
 
-    sharer_id = Column(Integer, ForeignKey("sharer.id"), nullable=False)
+    sharer_id = Column(Integer, ForeignKey("user.id"), nullable=False)
     decision = Column(
         String,
         CheckConstraint("decision IN ('yes','no','maybe','pending')"),

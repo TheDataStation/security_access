@@ -1,10 +1,7 @@
 from .all import (
     AllEntities,
     User,
-    Querier,
-    Sharer,
-    Operator,
-    Url,
+    File,
     Dataset,
     Query,
     QueryUsesDataset,

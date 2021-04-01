@@ -8,13 +8,14 @@ import {State} from '../state';
 import {
     commitAddNotification,
     commitRemoveNotification,
+    commitSetDatasets,
     commitSetLoggedIn,
     commitSetLogInError,
     commitSetToken,
     commitSetUserProfile,
-    commitSetDatasets,
 } from './mutations';
 import {AppNotification, MainState} from './state';
+import {IDatasetCreate, IDatasetUpdate} from "@/interfaces";
 
 type MainContext = ActionContext<MainState, State>;
 
@@ -25,6 +26,35 @@ export const actions = {
             if (response) {
                 commitSetDatasets(context, response.data);
             }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionUpdateDataset(context: MainContext, payload: { id: number, dataset: IDatasetUpdate }) {
+        try {
+            const loadingNotification = {content: 'saving', showProgress: true};
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.updateDataset(context.rootState.main.token, payload.id, payload.dataset),
+                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+            ]))[0];
+            commitSetDatasets(context, response.data);
+            commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, {content: 'Dataset successfully updated', color: 'success'});
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionCreateDataset(context: MainContext, payload: IDatasetCreate) {
+        try {
+            const loadingNotification = {content: 'saving', showProgress: true};
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.createDataset(context.rootState.main.token, payload),
+                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+            ]))[0];
+            // commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, {content: 'Dataset successfully created', color: 'success'});
         } catch (error) {
             await dispatchCheckApiError(context, error);
         }
@@ -183,3 +213,7 @@ export const dispatchRemoveNotification = dispatch(actions.removeNotification);
 export const dispatchPasswordRecovery = dispatch(actions.passwordRecovery);
 export const dispatchResetPassword = dispatch(actions.resetPassword);
 export const dispatchGetDatasets = dispatch(actions.actionGetDatasets);
+export const dispatchCreateDataset = dispatch(actions.actionCreateDataset);
+export const dispatchUpdateDataset = dispatch(actions.actionUpdateDataset);
+
+

@@ -33,16 +33,16 @@ interface DatasetBase {
 
 export interface IDatasetCreate extends DatasetBase {
     title: string;
-    data: string[];
+    file_ids: number[];
 }
 
-export interface IDatasetUpdate extends DatasetBase {
+export interface IDatasetUpdate extends IDatasetCreate {
 
 }
 
 export interface IDataset extends DatasetBase, Base {
     title: string;
-    url_ids: number[];
+    file_ids: number[];
 }
 
 

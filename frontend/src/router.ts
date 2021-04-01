@@ -58,55 +58,56 @@ export default new Router({
                                 },
                             ],
                         },
-                        {
-                            path: 'admin',
-                            component: () => import(/* webpackChunkName: "main-admin" */ './views/main/admin/Admin.vue'),
-                            redirect: 'admin/users/all',
-                            children: [
-                                {
-                                    path: 'users',
-                                    redirect: 'users/all',
-                                },
-                                {
-                                    path: 'users/all',
-                                    component: () => import(
-                                        /* webpackChunkName: "main-admin-users" */ './views/main/admin/AdminUsers.vue'),
-                                },
-                                {
-                                    path: 'users/edit/:id',
-                                    name: 'main-admin-users-edit',
-                                    component: () => import(
-                                        /* webpackChunkName: "main-admin-users-edit" */ './views/main/admin/EditUser.vue'),
-                                },
-                                {
-                                    path: 'users/create',
-                                    name: 'main-admin-users-create',
-                                    component: () => import(
-                                        /* webpackChunkName: "main-admin-users-create" */ './views/main/admin/CreateUser.vue'),
-                                },
-                            ],
-                        },
+                        // {
+                        //     path: 'admin',
+                        //     component: () => import(/* webpackChunkName: "main-admin" */ './views/main/admin/Admin.vue'),
+                        //     redirect: 'admin/users/all',
+                        //     children: [
+                        //         {
+                        //             path: 'users',
+                        //             redirect: 'users/all',
+                        //         },
+                        //         {
+                        //             path: 'users/all',
+                        //             component: () => import(
+                        //                 /* webpackChunkName: "main-admin-users" */ './views/main/admin/AdminUsers.vue'),
+                        //         },
+                        //         {
+                        //             path: 'users/edit/:id',
+                        //             name: 'main-admin-users-edit',
+                        //             component: () => import(
+                        //                 /* webpackChunkName: "main-admin-users-edit" */ './views/main/admin/EditUser.vue'),
+                        //         },
+                        //         {
+                        //             path: 'users/create',
+                        //             name: 'main-admin-users-create',
+                        //             component: () => import(
+                        //                 /* webpackChunkName: "main-admin-users-create" */ './views/main/admin/CreateUser.vue'),
+                        //         },
+                        //     ],
+                        // },
                         {
                             path: 'datasets',
                             component: () => import(/* webpackChunkName: "main-datasets" */ './views/main/datasets/Datasets.vue'),
+                            redirect: 'datasets/datasets/all',
                             children: [
+                                {
+                                    path: 'datasets/all',
+                                    component: () => import(
+                                        /* webpackChunkName: "main-datasets-users" */ './views/main/datasets/ViewDatasets.vue'),
+                                },
                                 // {
-                                //     path: 'datasets/all',
+                                //     path: 'datasets/edit/:id',
+                                //     name: 'main-datasets-edit',
                                 //     component: () => import(
-                                //         /* webpackChunkName: "main-datasets-users" */ './views/main/datasets/DataSets.vue'),
+                                //         /* webpackChunkName: "main-datasets-edit" */ './views/main/datasets/EditDataset.vue'),
                                 // },
-                                // {
-                                //     path: 'users/edit/:id',
-                                //     name: 'main-datasets-users-edit',
-                                //     component: () => import(
-                                //         /* webpackChunkName: "main-datasets-users-edit" */ './views/main/datasets/EditUser.vue'),
-                                // },
-                                // {
-                                //     path: 'users/create',
-                                //     name: 'main-datasets-users-create',
-                                //     component: () => import(
-                                //         /* webpackChunkName: "main-datasets-users-create" */ './views/main/datasets/CreateUser.vue'),
-                                // },
+                                {
+                                    path: 'datasets/create',
+                                    name: 'main-datasets-create',
+                                    component: () => import(
+                                        /* webpackChunkName: "main-datasets-create" */ './views/main/datasets/CreateDataset.vue'),
+                                },
                             ],
                         },
                     ],
@@ -118,3 +119,4 @@ export default new Router({
         },
     ],
 });
+

@@ -1,7 +1,3 @@
-from .token import Token, TokenPayload
-
-# from .user import User, UserCreate, UserInDB, UserUpdate
-
 from .access import (
     Access,
     AccessCreate,
@@ -12,8 +8,10 @@ from .dataset import (
     Dataset,
     DatasetCreate,
     DatasetUpdate,
-    Url,
+    File,
+    FileInDB
 )
+from .message import Message
 from .query import (
     Query,
     QueryCreate,
@@ -21,5 +19,7 @@ from .query import (
     QueryUsesDataset,
     QueryRequestsAccess,
 )
+from .token import Token, TokenPayload
 from .user import User, UserCreate, UserUpdate
-from .message import Message
+
+# from .user import User, UserCreate, UserInDB, UserUpdate

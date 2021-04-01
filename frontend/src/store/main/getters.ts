@@ -16,6 +16,12 @@ export const getters = {
     isLoggedIn: (state: MainState) => state.isLoggedIn,
     firstNotification: (state: MainState) => state.notifications.length > 0 && state.notifications[0],
     datasets: (state: MainState) => state.datasets,
+    oneDataset: (state: MainState) => (datasetId: number) => {
+        const filteredDatasets = state.datasets.filter((dataset) => dataset.id === datasetId);
+        if (filteredDatasets.length > 0) {
+            return {...filteredDatasets[0]};
+        }
+    },
 };
 
 const {read} = getStoreAccessors<MainState, State>('');
@@ -29,3 +35,4 @@ export const readToken = read(getters.token);
 export const readDatasets = read(getters.datasets);
 export const readUserProfile = read(getters.userProfile);
 export const readFirstNotification = read(getters.firstNotification);
+export const readOneDataset = read(getters.oneDataset);

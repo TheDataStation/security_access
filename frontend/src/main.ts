@@ -14,6 +14,7 @@ import VueFilterDateFormat from '@vuejs-community/vue-filter-date-format';
 
 Vue.config.productionTip = false;
 
+
 Vue.use(VueFilterDateParse);
 Vue.use(VueFilterDateFormat);
 

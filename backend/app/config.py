@@ -28,7 +28,7 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = "datastation"
 
-    SQLALCHEMY_DATABASE_URI: str = "sqlite:///sql_app.db"
+    SQLALCHEMY_DATABASE_URI: str = "sqlite:///app.sqlite"
 
     FIRST_SUPERUSER_EMAIL: str = "bob@aol.com"
     FIRST_SUPERUSER_PASSWORD: str = "max"

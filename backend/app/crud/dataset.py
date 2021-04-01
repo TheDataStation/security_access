@@ -1,68 +1,105 @@
-from typing import Type, Tuple, List, Union, Dict, Any, Optional
+import os
+from tempfile import SpooledTemporaryFile
+from typing import List, Any, Optional
 from uuid import uuid4
 
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from app import schemas
-from app.crud import CRUDBase
-from app.db import models
-from app.db.models import Dataset
+from app.db.models import Dataset, File
 from app.schemas import DatasetCreate, DatasetUpdate
 
-url = CRUDBase[models.Url, schemas.Url, schemas.Url](
-    models.Url, owner_attr="dataset_id"
-)
 
-DatasetAndUrlIDs = Tuple[Dataset, List[int]]
-
-
-class CRUDDataset(CRUDBase[Dataset, DatasetCreate, DatasetUpdate]):
-    def __init__(self, model: Dataset):
-        super().__init__(model, owner_attr="sharer_id")
-
-    # noinspection PyMethodOverriding
+class CRUDFile:
     def create(
-        self, db: Session, *, obj_in: DatasetCreate, with_owner_id: int
-    ) -> DatasetAndUrlIDs:
-        # TODO(max): this breaks if user isn't a sharer
+        self, db: Session, *, sharer_id: int, filename: str, file: SpooledTemporaryFile
+    ) -> File:
+        fp = f"datasets_dir/{uuid4()}"
+        open(fp, "wb").write(file.read())
+        file_obj = File(url=fp, name=filename, sharer_id=sharer_id)
+        db.add(file_obj)
+        db.commit()
+        db.refresh(file_obj)
+        return file_obj
+
+    def get(self, db: Session, id: int) -> File:
+        return db.query(File).filter(File.id == id).first()
+
+    def get_multi(
+        self,
+        db: Session,
+        *,
+        skip: int = 0,
+        limit: int = 100,
+        dataset_id: Optional[int] = None,
+        sharer_id: Optional[int] = None,
+    ) -> List[File]:
+
+        q = db.query(File)
+
+        if sharer_id is not None:
+            q = q.filter(File.sharer_id == sharer_id)
+        if dataset_id is not None:
+            q = q.filter(File.dataset_id == dataset_id)
+
+        return q.offset(skip).limit(limit).all()
+
+    def remove(self, db: Session, *, id: int) -> File:
+        obj: File = db.query(File).get(id)
+        db.delete(obj)
+        os.remove(obj.url)
+        db.commit()
+        return obj
+
+
+
+class CRUDDataset:
+    def create(
+        self, db: Session, *, obj_in: DatasetCreate, sharer_id: int
+    ) -> Dataset:
         dataset_obj = Dataset(
             title=obj_in.title,
             description=obj_in.description,
-            sharer_id=with_owner_id,
+            sharer_id=sharer_id,
         )
         db.add(dataset_obj)
         db.commit()
         db.refresh(dataset_obj)
-        url_ids = []
-        for datum in obj_in.data:
-            fp = f"datasets_dir/{uuid4()}"
-            open(fp, "w").write(datum)
-            url_ids.append(
-                url.create(
-                    db, obj_in=schemas.Url(url=fp), with_owner_id=dataset_obj.id
-                ).id
-            )
-        return dataset_obj, url_ids
+        for file_id in obj_in.file_ids:
+            file = db.query(File).filter(File.id == file_id).one()
+            file.dataset_id = dataset_obj.id
+            db.commit()
 
-    def get(self, db: Session, id: Any) -> DatasetAndUrlIDs:
-        dataset = super().get(db, id)
-        url_ids = [u.id for u in url.get_multi(db=db, with_owner_id=dataset.id)]
-        return dataset, url_ids
+        return dataset_obj
 
-    # noinspection PyMethodOverriding
+    def get(self, db: Session, id: int) -> Dataset:
+        return db.query(Dataset).filter(Dataset.id == id).first()
+
     def get_multi(
-        self, db: Session, *, skip: int = 0, limit: int = 100, with_owner_id: int = None
-    ) -> List[DatasetAndUrlIDs]:
-        datasets = super().get_multi(
-            db, skip=skip, limit=limit, with_owner_id=with_owner_id
-        )
-        url_ids = [
-            [u.id for u in url.get_multi(db=db, with_owner_id=dataset.id)]
-            for dataset in datasets
-        ]
-        return list(zip(datasets, url_ids))
+        self, db: Session, *, skip: int = 0, limit: int = 100, sharer_id: int = None
+    ) -> List[Dataset]:
+        q = db.query(Dataset)
+        if sharer_id is not None:
+            q = q.filter(Dataset.sharer_id == sharer_id)
 
-    def update(self, db: Session, *, db_obj, obj_in) -> DatasetAndUrlIDs:
-        dataset = super().update(db, db_obj=db_obj, obj_in=obj_in)
-        url_ids = [u.id for u in url.get_multi(db=db, with_owner_id=dataset.id)]
-        return dataset, url_ids
+        return q.offset(skip).limit(limit).all()
+
+    def update(self, db: Session, *, db_obj: Dataset, obj_in: DatasetUpdate) -> Dataset:
+        obj_data = jsonable_encoder(db_obj)
+        if isinstance(obj_in, dict):
+            update_data = obj_in
+        else:
+            update_data = obj_in.dict(exclude_unset=True)
+        for field in obj_data:
+            if field in update_data:
+                setattr(db_obj, field, update_data[field])
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
+    def remove(self, db: Session, *, id: int) -> Dataset:
+        obj = db.query(Dataset).get(id)
+        db.delete(obj)
+        db.commit()
+        return obj
