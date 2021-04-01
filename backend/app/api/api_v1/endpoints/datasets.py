@@ -34,7 +34,9 @@ def read_datasets(
         for dataset in datasets
     ]
     return [
-        schemas.Dataset(**row2dict(dataset), file_ids=[file.id for file in files_per_dataset])
+        schemas.Dataset(
+            **row2dict(dataset), file_ids=[file.id for file in files_per_dataset]
+        )
         for dataset, files_per_dataset in zip(datasets, files_for_all_datasets)
     ]
 

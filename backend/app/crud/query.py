@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 
 from app import schemas
-from app.db import models
-from app.crud.base import CRUDBase
 from app.crud import access, access_grants_dataset
+from app.crud.base import CRUDBase
+from app.db import models
 
 
 class CRUDQueryRequestsAccess(

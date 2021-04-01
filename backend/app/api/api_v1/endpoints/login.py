@@ -6,11 +6,11 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from app import crud, schemas
-from app.db import models
 from app.api import deps
-from app.core import security
 from app.config import settings
+from app.core import security
 from app.core.security import get_password_hash
+from app.db import models
 from app.utils import (
     verify_password_reset_token,
 )

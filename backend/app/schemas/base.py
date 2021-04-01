@@ -1,6 +1,6 @@
 import datetime
 
-from pydantic import BaseModel, PrivateAttr
+from pydantic import BaseModel
 
 
 class AllDBEntities(BaseModel):

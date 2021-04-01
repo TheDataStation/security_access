@@ -1,6 +1,6 @@
 import os
 from tempfile import SpooledTemporaryFile
-from typing import List, Any, Optional
+from typing import List, Optional
 from uuid import uuid4
 
 from fastapi.encoders import jsonable_encoder
@@ -52,11 +52,8 @@ class CRUDFile:
         return obj
 
 
-
 class CRUDDataset:
-    def create(
-        self, db: Session, *, obj_in: DatasetCreate, sharer_id: int
-    ) -> Dataset:
+    def create(self, db: Session, *, obj_in: DatasetCreate, sharer_id: int) -> Dataset:
         dataset_obj = Dataset(
             title=obj_in.title,
             description=obj_in.description,

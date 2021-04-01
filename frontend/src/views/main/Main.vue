@@ -157,10 +157,6 @@ export default class Main extends Vue {
         commitSetDashboardShowDrawer(this.$store, value);
     }
 
-    public get hasAdminAccess() {
-        return readHasAdminAccess(this.$store);
-    }
-
     public beforeRouteEnter(to, from, next) {
         routeGuardMain(to, from, next);
     }

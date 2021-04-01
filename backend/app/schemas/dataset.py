@@ -9,6 +9,7 @@ class File(AllDBEntities):
     name: str
     _sharer_id: int = PrivateAttr()
 
+
 class FileInDB(File):
     _dataset_id: int = PrivateAttr()
     url: str

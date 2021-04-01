@@ -127,7 +127,7 @@ export default class CreateDataset extends Vue {
             }
             //TODO(max): on failure files don't get deleted server side
             await dispatchCreateDataset(this.$store, createdDataset);
-            this.$router.push('/main/datasets');
+            await this.$router.push('/main/datasets');
 
         }
     }

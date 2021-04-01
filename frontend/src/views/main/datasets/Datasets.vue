@@ -4,15 +4,6 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {store} from '@/store';
-
-// const routeGuarddatasets = async (to, from, next) => {
-//     if (!readHasdatasetsAccess(store)) {
-//         next('/main');
-//     } else {
-//         next();
-//     }
-// };
 
 @Component
 export default class Datasets extends Vue {
