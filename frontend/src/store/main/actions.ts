@@ -7,17 +7,105 @@ import {ActionContext} from 'vuex';
 import {State} from '../state';
 import {
     commitAddNotification,
+    commitPushDataset,
+    commitPushQuery,
     commitRemoveNotification,
+    commitSetDataset,
+    commitSetDatasets,
     commitSetLoggedIn,
     commitSetLogInError,
+    commitSetQueries,
+    commitSetQuery,
     commitSetToken,
     commitSetUserProfile,
 } from './mutations';
 import {AppNotification, MainState} from './state';
+import {IDatasetCreate, IDatasetUpdate, IQueryCreate, IQueryUpdate} from "@/interfaces";
 
 type MainContext = ActionContext<MainState, State>;
 
 export const actions = {
+    async actionGetQueries(context: MainContext) {
+        try {
+            const response = await api.getQueries(context.rootState.main.token);
+            if (response) {
+                commitSetQueries(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionUpdateQuery(context: MainContext, payload: { id: number, query: IQueryUpdate }) {
+        try {
+            const loadingNotification = {content: 'saving', showProgress: true};
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.updateQuery(context.rootState.main.token, payload.id, payload.query),
+                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+            ]))[0];
+            commitSetQuery(context, response.data);
+            commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, {content: 'Query successfully updated', color: 'success'});
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionCreateQuery(context: MainContext, payload: { query: IQueryCreate, datasetId?: number }) {
+        try {
+            const {query, datasetId} = payload;
+            const loadingNotification = {content: 'saving', showProgress: true};
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.createQuery(context.rootState.main.token, query, datasetId),
+                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+            ]))[0];
+            commitPushQuery(context, response.data);
+            commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, {content: 'Query successfully created', color: 'success'});
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionGetDatasets(context: MainContext) {
+        try {
+            const response = await api.getDatasets(context.rootState.main.token);
+            if (response) {
+                commitSetDatasets(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionUpdateDataset(context: MainContext, payload: { id: number, dataset: IDatasetUpdate }) {
+        try {
+            const loadingNotification = {content: 'saving', showProgress: true};
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.updateDataset(context.rootState.main.token, payload.id, payload.dataset),
+                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+            ]))[0];
+            commitSetDataset(context, response.data);
+            commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, {content: 'Dataset successfully updated', color: 'success'});
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionCreateDataset(context: MainContext, payload: IDatasetCreate) {
+        try {
+            const loadingNotification = {content: 'saving', showProgress: true};
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.createDataset(context.rootState.main.token, payload),
+                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+            ]))[0];
+            commitPushDataset(context, response.data);
+            commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, {content: 'Dataset successfully created', color: 'success'});
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
     async actionLogIn(context: MainContext, payload: { username: string; password: string }) {
         try {
             const response = await api.logInGetToken(payload.username, payload.password);
@@ -171,3 +259,9 @@ export const dispatchUpdateUserProfile = dispatch(actions.actionUpdateUserProfil
 export const dispatchRemoveNotification = dispatch(actions.removeNotification);
 export const dispatchPasswordRecovery = dispatch(actions.passwordRecovery);
 export const dispatchResetPassword = dispatch(actions.resetPassword);
+export const dispatchGetDatasets = dispatch(actions.actionGetDatasets);
+export const dispatchCreateDataset = dispatch(actions.actionCreateDataset);
+export const dispatchUpdateDataset = dispatch(actions.actionUpdateDataset);
+export const dispatchCreateQuery = dispatch(actions.actionCreateQuery);
+export const dispatchGetQueries = dispatch(actions.actionGetQueries);
+

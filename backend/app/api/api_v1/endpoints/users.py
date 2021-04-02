@@ -6,9 +6,9 @@ from pydantic.networks import EmailStr
 from sqlalchemy.orm import Session
 
 from app import crud, schemas
-from app.db import models
 from app.api import deps
 from app.config import settings
+from app.db import models
 
 router = APIRouter()
 
@@ -121,7 +121,7 @@ def read_user_by_id(
     user = crud.user.get(db, id=user_id)
     if user == current_user:
         return user
-    if not crud.user.is_superuser(current_user):
+    if not crud.user.is_operator(current_user):
         raise HTTPException(
             status_code=400, detail="The user doesn't have enough privileges"
         )

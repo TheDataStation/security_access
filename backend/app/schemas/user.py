@@ -2,7 +2,6 @@ from typing import Optional
 
 from pydantic import BaseModel, EmailStr
 
-
 # Shared properties
 from app.schemas.base import AllDBEntities
 

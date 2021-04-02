@@ -1,7 +1,6 @@
-import logging
 from datetime import datetime, timedelta
-from pathlib import Path
-from typing import Any, Dict, Optional
+from datetime import datetime, timedelta
+from typing import Optional
 
 from jose import jwt
 
@@ -104,3 +103,11 @@ def verify_password_reset_token(token: str) -> Optional[str]:
         return decoded_token["email"]
     except jwt.JWTError:
         return None
+
+
+def row2dict(row):
+    d = {}
+    for column in row.__table__.columns:
+        d[column.name] = str(getattr(row, column.name))
+
+    return d

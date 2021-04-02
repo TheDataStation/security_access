@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 
 from app import crud, schemas
 from app.config import settings
-from app.core.security import get_password_hash
 
 # make sure all SQL Alchemy models are imported (app.db.base) before initializing DB
 # otherwise, SQL Alchemy might fail to initialize relationships properly

@@ -1,10 +1,10 @@
 import datetime
 
-from pydantic import BaseModel, PrivateAttr
+from pydantic import BaseModel
 
 
 class AllDBEntities(BaseModel):
-    _id: int = PrivateAttr()
+    id: int
     created_at: datetime.datetime
 
     class Config:

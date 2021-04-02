@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app.config import settings
 
+
 # in order that sqlite respects fk constraints
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, _connection_record):

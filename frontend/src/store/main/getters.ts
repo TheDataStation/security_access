@@ -15,6 +15,15 @@ export const getters = {
     token: (state: MainState) => state.token,
     isLoggedIn: (state: MainState) => state.isLoggedIn,
     firstNotification: (state: MainState) => state.notifications.length > 0 && state.notifications[0],
+    datasets: (state: MainState) => state.datasets,
+    queries: (state: MainState) => state.queries,
+    oneDataset: (state: MainState) => (datasetId: number) => {
+        const filteredDatasets = state.datasets.filter((dataset) => dataset.id === datasetId);
+        if (filteredDatasets.length > 0) {
+            return {...filteredDatasets[0]};
+        }
+    },
+    lastDataset: (state: MainState) => state.datasets[state.datasets.length-1],
 };
 
 const {read} = getStoreAccessors<MainState, State>('');
@@ -25,5 +34,9 @@ export const readHasAdminAccess = read(getters.hasAdminAccess);
 export const readIsLoggedIn = read(getters.isLoggedIn);
 export const readLoginError = read(getters.loginError);
 export const readToken = read(getters.token);
+export const readDatasets = read(getters.datasets);
+export const readQueries = read(getters.queries);
 export const readUserProfile = read(getters.userProfile);
 export const readFirstNotification = read(getters.firstNotification);
+export const readOneDataset = read(getters.oneDataset);
+export const readLastDataset = read(getters.lastDataset);

@@ -1,7 +1,6 @@
-import secrets
-from typing import Any, Dict, List, Optional, Union
+from typing import List, Union
 
-from pydantic import AnyHttpUrl, BaseSettings, EmailStr, HttpUrl, PostgresDsn, validator
+from pydantic import AnyHttpUrl, BaseSettings, validator
 
 
 class Settings(BaseSettings):
@@ -28,7 +27,7 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = "datastation"
 
-    SQLALCHEMY_DATABASE_URI: str = "sqlite:///sql_app.db"
+    SQLALCHEMY_DATABASE_URI: str = "sqlite:///app.sqlite"
 
     FIRST_SUPERUSER_EMAIL: str = "bob@aol.com"
     FIRST_SUPERUSER_PASSWORD: str = "max"

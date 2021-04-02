@@ -65,6 +65,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                 self.owner_attr is not None
             ), f"model {self.model.__name__} does not have owner attr"
             obj_in_data[self.owner_attr] = with_owner_id
+        if self.owner_attr is not None and with_owner_id is None:
+            raise Exception(f"model {self.model.__name__} did not get with_owner_id")
 
         db_obj = self.model(**obj_in_data)  # type: ignore
         db.add(db_obj)

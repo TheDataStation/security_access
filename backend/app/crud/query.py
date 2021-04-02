@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 
 from app import schemas
-from app.db import models
-from app.crud.base import CRUDBase
 from app.crud import access, access_grants_dataset
+from app.crud.base import CRUDBase
+from app.db import models
 
 
 class CRUDQueryRequestsAccess(
@@ -27,14 +27,12 @@ class CRUDQueryRequestsAccess(
             .where(models.Dataset.id == dataset_id)
             .one()
         )
-        with db.begin():
-            accessdb = access.create(schemas.AccessCreate(), with_owner_id=sharer.id)
-            access_grants_dataset.create(
-                schemas.AccessGrantsDataset(
-                    _access_id=accessdb.id, _dataset_id=dataset_id
-                )
+        accessdb = access.create(schemas.AccessCreate(), with_owner_id=sharer.id)
+        access_grants_dataset.create(
+            schemas.AccessGrantsDataset(
+                _access_id=accessdb.id, _dataset_id=dataset_id
             )
-            x = super(CRUDQueryRequestsAccess, self).create(
-                db, obj_in=obj_in, with_owner_id=accessdb.id
-            )
-            return x
+        )
+        return super(CRUDQueryRequestsAccess, self).create(
+            db, obj_in=obj_in, with_owner_id=accessdb.id
+        )

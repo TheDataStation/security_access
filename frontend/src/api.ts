@@ -1,16 +1,27 @@
 import axios from 'axios';
 import {apiUrl} from '@/env';
-import {IUserProfile, IUserProfileCreate, IUserProfileUpdate} from './interfaces';
+import {
+    IDataset,
+    IDatasetCreate,
+    IDatasetUpdate,
+    IQuery,
+    IQueryCreate,
+    IQueryUpdate,
+    IUser,
+    IUserCreate,
+    IUserUpdate
+} from '@/interfaces';
 
-function authHeaders(token: string) {
-    return {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    };
-}
 
 export const api = {
+    uploadUrl: `${apiUrl}/api/v1/files/`,
+    authHeaders(token: string) {
+        return {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+    },
     async logInGetToken(username: string, password: string) {
         const params = new URLSearchParams();
         params.append('username', username);
@@ -19,19 +30,43 @@ export const api = {
         return axios.post(`${apiUrl}/api/v1/login/access-token`, params);
     },
     async getMe(token: string) {
-        return axios.get<IUserProfile>(`${apiUrl}/api/v1/users/me`, authHeaders(token));
+        return axios.get<IUser>(`${apiUrl}/api/v1/users/me`, this.authHeaders(token));
     },
-    async updateMe(token: string, data: IUserProfileUpdate) {
-        return axios.put<IUserProfile>(`${apiUrl}/api/v1/users/me`, data, authHeaders(token));
+    async updateMe(token: string, data: IUserUpdate) {
+        return axios.put<IUser>(`${apiUrl}/api/v1/users/me`, data, this.authHeaders(token));
     },
+    async getDatasets(token: string) {
+        return axios.get<IDataset[]>(`${apiUrl}/api/v1/datasets/`, this.authHeaders(token));
+    },
+    async updateDataset(token: string, datasetId: number, data: IDatasetUpdate) {
+        return axios.put(`${apiUrl}/api/v1/datasets/${datasetId}`, data, this.authHeaders(token));
+    },
+    async createDataset(token: string, data: IDatasetCreate) {
+        return axios.post(`${apiUrl}/api/v1/datasets/`, data, this.authHeaders(token));
+    },
+
+    async getQueries(token: string) {
+        return axios.get<IQuery[]>(`${apiUrl}/api/v1/queries/`, this.authHeaders(token));
+    },
+    async updateQuery(token: string, queryId: number, data: IQueryUpdate) {
+        return axios.put(`${apiUrl}/api/v1/queries/${queryId}`, data, this.authHeaders(token));
+    },
+    async createQuery(token: string, data: IQueryCreate, datasetId?: number) {
+        return axios.post(`${apiUrl}/api/v1/queries/`, {
+            query_in: data,
+            dataset_id: {dataset_id: datasetId}
+        }, this.authHeaders(token));
+    },
+
+
     async getUsers(token: string) {
-        return axios.get<IUserProfile[]>(`${apiUrl}/api/v1/users/`, authHeaders(token));
+        return axios.get<IUser[]>(`${apiUrl}/api/v1/users/`, this.authHeaders(token));
     },
-    async updateUser(token: string, userId: number, data: IUserProfileUpdate) {
-        return axios.put(`${apiUrl}/api/v1/users/${userId}`, data, authHeaders(token));
+    async updateUser(token: string, userId: number, data: IUserUpdate) {
+        return axios.put(`${apiUrl}/api/v1/users/${userId}`, data, this.authHeaders(token));
     },
-    async createUser(token: string, data: IUserProfileCreate) {
-        return axios.post(`${apiUrl}/api/v1/users/`, data, authHeaders(token));
+    async createUser(token: string, data: IUserCreate) {
+        return axios.post(`${apiUrl}/api/v1/users/`, data, this.authHeaders(token));
     },
     async passwordRecovery(email: string) {
         return axios.post(`${apiUrl}/api/v1/password-recovery/${email}`);
