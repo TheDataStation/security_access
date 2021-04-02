@@ -27,13 +27,12 @@ class CRUDQueryRequestsAccess(
             .where(models.Dataset.id == dataset_id)
             .one()
         )
-        with db.begin():
-            accessdb = access.create(schemas.AccessCreate(), with_owner_id=sharer.id)
-            access_grants_dataset.create(
-                schemas.AccessGrantsDataset(
-                    _access_id=accessdb.id, _dataset_id=dataset_id
-                )
+        accessdb = access.create(schemas.AccessCreate(), with_owner_id=sharer.id)
+        access_grants_dataset.create(
+            schemas.AccessGrantsDataset(
+                _access_id=accessdb.id, _dataset_id=dataset_id
             )
-            return super(CRUDQueryRequestsAccess, self).create(
-                db, obj_in=obj_in, with_owner_id=accessdb.id
-            )
+        )
+        return super(CRUDQueryRequestsAccess, self).create(
+            db, obj_in=obj_in, with_owner_id=accessdb.id
+        )

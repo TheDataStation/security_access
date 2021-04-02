@@ -142,11 +142,12 @@ import {commitSetDashboardMiniDrawer, commitSetDashboardShowDrawer} from '@/stor
 import {dispatchUserLogOut} from '@/store/main/actions';
 
 const routeGuardMain = async (to, from, next) => {
-    if (to.path === '/main') {
-        next('/main/dashboard');
-    } else {
-        next();
-    }
+    // if (to.path === '/main') {
+    //     next('/main/dashboard');
+    // } else {
+    //     next();
+    // }
+    next();
 };
 
 @Component

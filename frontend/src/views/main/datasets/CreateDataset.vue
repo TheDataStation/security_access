@@ -58,13 +58,12 @@ import {dispatchCreateDataset, dispatchGetDatasets} from '@/store/main/actions';
 // Import Vue FilePond
 import VueFilePond from "vue-filepond";
 import {setOptions} from "filepond";
-
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
-import {Api} from '@/api';
+import {api} from '@/api';
 import {readToken} from "@/store/main/getters";
 import {store} from '@/store'
-import UploadButton from "@/components/UploadButton.vue";
+import {IDatasetCreate} from "@/interfaces";
 
 
 const FilePond = VueFilePond();
@@ -73,7 +72,6 @@ const FilePond = VueFilePond();
 @Component({
     components: {
         FilePond,
-        UploadButton
     },
 })
 export default class CreateDataset extends Vue {
@@ -81,7 +79,7 @@ export default class CreateDataset extends Vue {
     public loading = false;
     public title: string = '';
     public description?: string = '';
-    public file_ids: any[] = [];
+    public fileIds: any[] = [];
 
     public handleFilePondInit() {
         // FilePond instance methods are available on `this.$refs.pond`
@@ -89,7 +87,7 @@ export default class CreateDataset extends Vue {
     }
 
     public handleFilePondUploadFile(err, file) {
-        this.file_ids.push(parseInt(file.serverId));
+        this.fileIds.push(parseInt(file.serverId));
     }
 
     public async mounted() {
@@ -107,7 +105,7 @@ export default class CreateDataset extends Vue {
     public reset() {
         this.title = '';
         this.description = '';
-        this.file_ids = [];
+        this.fileIds = [];
         this.loading = false;
         this.$validator.reset();
     }
@@ -121,7 +119,7 @@ export default class CreateDataset extends Vue {
             const createdDataset: IDatasetCreate = {
                 title: this.title,
                 description: '',
-                file_ids: this.file_ids,
+                fileIds: this.fileIds,
             };
             if (this.description) {
                 createdDataset.description = this.description;

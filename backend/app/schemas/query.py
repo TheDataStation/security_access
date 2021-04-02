@@ -32,9 +32,9 @@ class QueryBase(AllDBEntities):
 
 
 # Properties to receive on query creation
-class QueryCreate(QueryBase):
-    status: QueryStatus = QueryStatus.pending
+class QueryCreate(BaseModel):
     type: QueryType
+    description: Optional[str]
     payload: Json
     _querier_id: int = PrivateAttr()
 
@@ -48,13 +48,13 @@ class Query(QueryBase):
 
 
 class QueryUsesDataset(BaseModel):
-    _query_id: int = PrivateAttr()
-    _dataset_id: int = PrivateAttr()
+    query_id: int
+    dataset_id: int
 
 
 class QueryRequestsAccess(BaseModel):
     expiry: Optional[Union[datetime.datetime, datetime.timedelta]]
     reveal_input_data: Optional[bool] = None
     reveal_querier: Optional[bool] = None
-    _query_id: int = PrivateAttr()
-    _access_id: int = PrivateAttr()
+    query_id: int
+    access_id: int
