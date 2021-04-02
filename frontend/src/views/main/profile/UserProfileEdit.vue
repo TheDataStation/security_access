@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {IUserProfileUpdate} from '@/interfaces';
+import {IUserUpdate} from '@/interfaces';
 import {readUserProfile} from '@/store/main/getters';
 import {dispatchUpdateUserProfile} from '@/store/main/actions';
 
@@ -62,16 +62,16 @@ export default class UserProfileEdit extends Vue {
     public created() {
         const userProfile = readUserProfile(this.$store);
         if (userProfile) {
-            this.fullName = userProfile.full_name;
-            this.email = userProfile.email;
+            this.fullName = userProfile.full_name!;
+            this.email = userProfile.email!;
         }
     }
 
     public reset() {
         const userProfile = readUserProfile(this.$store);
         if (userProfile) {
-            this.fullName = userProfile.full_name;
-            this.email = userProfile.email;
+            this.fullName = userProfile.full_name!;
+            this.email = userProfile.email!;
         }
     }
 
@@ -81,7 +81,7 @@ export default class UserProfileEdit extends Vue {
 
     public async submit() {
         if ((this.$refs.form as any).validate()) {
-            const updatedProfile: IUserProfileUpdate = {};
+            const updatedProfile: IUserUpdate = {};
             if (this.fullName) {
                 updatedProfile.full_name = this.fullName;
             }

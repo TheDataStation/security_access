@@ -120,7 +120,10 @@ def delete_dataset(
     return dataset
 
 
-@router.post("/file/")
+file_router = APIRouter()
+
+
+@file_router.post("/")
 async def create_file(
     db: Session = Depends(deps.get_db),
     file: UploadFile = File(...),
@@ -132,7 +135,7 @@ async def create_file(
     return file.id
 
 
-@router.delete("/file/", response_model=schemas.File)
+@file_router.delete("/", response_model=schemas.File)
 async def delete_file(
     *,
     db: Session = Depends(deps.get_db),

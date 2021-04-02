@@ -110,6 +110,30 @@ export default new Router({
                                 },
                             ],
                         },
+                        {
+                            path: 'queries',
+                            component: () => import(/* webpackChunkName: "main-queries" */ './views/main/queries/Queries.vue'),
+                            redirect: 'queries/queries/all',
+                            children: [
+                                {
+                                    path: 'queries/all',
+                                    component: () => import(
+                                        /* webpackChunkName: "main-queries-users" */ './views/main/queries/ViewQuery.vue'),
+                                },
+                                // {
+                                //     path: 'queries/edit/:id',
+                                //     name: 'main-queries-edit',
+                                //     component: () => import(
+                                //         /* webpackChunkName: "main-queries-edit" */ './views/main/queries/EditQuery.vue'),
+                                // },
+                                {
+                                    path: 'queries/create',
+                                    name: 'main-queries-create',
+                                    component: () => import(
+                                        /* webpackChunkName: "main-queries-create" */ './views/main/queries/CreateQuery.vue'),
+                                },
+                            ],
+                        },
                     ],
                 },
             ],

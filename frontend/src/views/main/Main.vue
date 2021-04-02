@@ -20,6 +20,14 @@
                             <v-list-tile-title>Datasets</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
+                    <v-list-tile to="/main/queries">
+                        <v-list-tile-action>
+                            <v-icon>query_stats</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>Queries</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
                     <v-list-tile to="/main/profile/view">
                         <v-list-tile-action>
                             <v-icon>person</v-icon>
@@ -46,25 +54,25 @@
                     </v-list-tile>
                 </v-list>
                 <v-divider></v-divider>
-<!--                <v-list v-show="hasAdminAccess" subheader>-->
-<!--                    <v-subheader>Admin</v-subheader>-->
-<!--                    <v-list-tile to="/main/admin/users/all">-->
-<!--                        <v-list-tile-action>-->
-<!--                            <v-icon>group</v-icon>-->
-<!--                        </v-list-tile-action>-->
-<!--                        <v-list-tile-content>-->
-<!--                            <v-list-tile-title>Manage Users</v-list-tile-title>-->
-<!--                        </v-list-tile-content>-->
-<!--                    </v-list-tile>-->
-<!--                    <v-list-tile to="/main/admin/users/create">-->
-<!--                        <v-list-tile-action>-->
-<!--                            <v-icon>person_add</v-icon>-->
-<!--                        </v-list-tile-action>-->
-<!--                        <v-list-tile-content>-->
-<!--                            <v-list-tile-title>Create User</v-list-tile-title>-->
-<!--                        </v-list-tile-content>-->
-<!--                    </v-list-tile>-->
-<!--                </v-list>-->
+                <!--                <v-list v-show="hasAdminAccess" subheader>-->
+                <!--                    <v-subheader>Admin</v-subheader>-->
+                <!--                    <v-list-tile to="/main/admin/users/all">-->
+                <!--                        <v-list-tile-action>-->
+                <!--                            <v-icon>group</v-icon>-->
+                <!--                        </v-list-tile-action>-->
+                <!--                        <v-list-tile-content>-->
+                <!--                            <v-list-tile-title>Manage Users</v-list-tile-title>-->
+                <!--                        </v-list-tile-content>-->
+                <!--                    </v-list-tile>-->
+                <!--                    <v-list-tile to="/main/admin/users/create">-->
+                <!--                        <v-list-tile-action>-->
+                <!--                            <v-icon>person_add</v-icon>-->
+                <!--                        </v-list-tile-action>-->
+                <!--                        <v-list-tile-content>-->
+                <!--                            <v-list-tile-title>Create User</v-list-tile-title>-->
+                <!--                        </v-list-tile-content>-->
+                <!--                    </v-list-tile>-->
+                <!--                </v-list>-->
                 <v-spacer></v-spacer>
                 <v-list>
                     <v-list-tile @click="logout">
@@ -129,16 +137,17 @@
 import {Component, Vue} from 'vue-property-decorator';
 
 import {appName} from '@/env';
-import {readDashboardMiniDrawer, readDashboardShowDrawer, readHasAdminAccess} from '@/store/main/getters';
+import {readDashboardMiniDrawer, readDashboardShowDrawer} from '@/store/main/getters';
 import {commitSetDashboardMiniDrawer, commitSetDashboardShowDrawer} from '@/store/main/mutations';
 import {dispatchUserLogOut} from '@/store/main/actions';
 
 const routeGuardMain = async (to, from, next) => {
-    if (to.path === '/main') {
-        next('/main/dashboard');
-    } else {
-        next();
-    }
+    // if (to.path === '/main') {
+    //     next('/main/dashboard');
+    // } else {
+    //     next();
+    // }
+    next();
 };
 
 @Component

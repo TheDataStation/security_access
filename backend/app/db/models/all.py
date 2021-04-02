@@ -71,7 +71,6 @@ class Query(Base, AllEntities):
     )
     payload = Column(JSON, nullable=False)
 
-    input_data = Column(BLOB)
     status_reason = Column(String)
     description = Column(String)
 
