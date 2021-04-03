@@ -8,10 +8,30 @@
                 <div class="headline font-weight-light ma-5">Welcome {{ greetedUser }}</div>
             </v-card-text>
             <v-card-actions>
-                <v-btn to="/main/profile/view">View Profile</v-btn>
-                <v-btn to="/main/profile/edit">Edit Profile</v-btn>
-                <v-btn to="/main/profile/password">Change Password</v-btn>
-                <v-btn to="/main/datasets/">View Datasets</v-btn>
+                <v-btn to="/main/profile/view">
+                    <v-icon left>
+                        web
+                    </v-icon>
+                    View Profile
+                </v-btn>
+                <v-btn to="/main/datasets/">
+                    <v-icon left>
+                        description
+                    </v-icon>
+                    View Datasets
+                </v-btn>
+                <v-btn to="/main/queries/">
+                    <v-icon left>
+                        query_stats
+                    </v-icon>
+                    View Queries
+                </v-btn>
+                <v-btn to="/main/accesses/">
+                    <v-icon left>
+                        admin_panel_settings
+                    </v-icon>
+                    View Accesses
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-container>
@@ -19,7 +39,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {readUserProfile} from '@/store/main/getters';
+import {readUserProfile} from '@/store/getters';
 
 @Component
 export default class Dashboard extends Vue {

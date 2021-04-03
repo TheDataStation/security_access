@@ -52,8 +52,8 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {IUserUpdate} from '@/interfaces';
-import {readUserProfile} from '@/store/main/getters';
-import {dispatchUpdateUserProfile} from '@/store/main/actions';
+import {readUserProfile} from '@/store/getters';
+import {dispatchUpdateUserProfile} from '@/store/actions';
 
 @Component
 export default class UserProfileEdit extends Vue {

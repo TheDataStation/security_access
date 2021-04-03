@@ -3,7 +3,7 @@ from enum import auto
 from typing import Optional, Union
 
 from fastapi_utils.enums import StrEnum
-from pydantic import BaseModel, Json, PrivateAttr
+from pydantic import BaseModel, Json
 
 from app.schemas.base import AllDBEntities
 
@@ -36,7 +36,6 @@ class QueryCreate(BaseModel):
     type: QueryType
     description: Optional[str]
     payload: Json
-    _querier_id: int = PrivateAttr()
 
 
 class QueryUpdate(QueryBase):
@@ -44,7 +43,7 @@ class QueryUpdate(QueryBase):
 
 
 class Query(QueryBase):
-    pass
+    querier_id: int
 
 
 class QueryUsesDataset(BaseModel):

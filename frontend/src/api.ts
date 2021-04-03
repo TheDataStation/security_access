@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {apiUrl} from '@/env';
 import {
+    IBothAccess,
     IDataset,
     IDatasetCreate,
     IDatasetUpdate,
@@ -9,7 +10,7 @@ import {
     IQueryUpdate,
     IUser,
     IUserCreate,
-    IUserUpdate
+    IUserUpdate,
 } from '@/interfaces';
 
 
@@ -44,7 +45,9 @@ export const api = {
     async createDataset(token: string, data: IDatasetCreate) {
         return axios.post(`${apiUrl}/api/v1/datasets/`, data, this.authHeaders(token));
     },
-
+    async getAccesses(token: string) {
+        return axios.get<IBothAccess>(`${apiUrl}/api/v1/accesses/`, this.authHeaders(token));
+    },
     async getQueries(token: string) {
         return axios.get<IQuery[]>(`${apiUrl}/api/v1/queries/`, this.authHeaders(token));
     },
@@ -54,7 +57,7 @@ export const api = {
     async createQuery(token: string, data: IQueryCreate, datasetId?: number) {
         return axios.post(`${apiUrl}/api/v1/queries/`, {
             query_in: data,
-            dataset_id: {dataset_id: datasetId}
+            dataset_id: {dataset_id: datasetId},
         }, this.authHeaders(token));
     },
 

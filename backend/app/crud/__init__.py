@@ -1,28 +1,11 @@
-from app import schemas
-from app.db import models
-from .base import CRUDBase
-from .dataset import CRUDDataset, CRUDFile
-from .user import CRUDUser
-
-access = CRUDBase[models.Access, schemas.AccessCreate, schemas.AccessUpdate](
-    models.Access, owner_attr="sharer_id"
+from .crud_dataset import dataset, file
+from .crud_query import (
+    query_requests_access,
+    query_uses_dataset,
+    query,
+    access,
+    access_grants_dataset,
+    get_accesses_for_queries,
+    get_accesses_for_query,
 )
-access_grants_dataset = CRUDBase[
-    models.AccessGrantsDataset,
-    schemas.AccessGrantsDataset,
-    schemas.AccessGrantsDataset,
-](models.AccessGrantsDataset)
-
-user = CRUDUser(models.User)
-
-query = CRUDBase[models.Query, schemas.QueryCreate, schemas.QueryUpdate](
-    models.Query, owner_attr="querier_id"
-)
-query_uses_dataset = CRUDBase[
-    models.QueryUsesDataset,
-    schemas.QueryUsesDataset,
-    schemas.QueryUsesDataset,
-](models.QueryUsesDataset)
-
-dataset = CRUDDataset()
-file = CRUDFile()
+from .crud_user import user

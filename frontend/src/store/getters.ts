@@ -1,6 +1,5 @@
-import {MainState} from './state';
+import {MainState, State} from '@/store';
 import {getStoreAccessors} from 'typesafe-vuex';
-import {State} from '../state';
 
 export const getters = {
     hasAdminAccess: (state: MainState) => {
@@ -17,13 +16,15 @@ export const getters = {
     firstNotification: (state: MainState) => state.notifications.length > 0 && state.notifications[0],
     datasets: (state: MainState) => state.datasets,
     queries: (state: MainState) => state.queries,
+    accessGrants: (state: MainState) => state.accesses.access_grants ? state.accesses.access_grants : [],
+    accessReceipts: (state: MainState) => state.accesses.access_receipts ? state.accesses.access_receipts : [],
     oneDataset: (state: MainState) => (datasetId: number) => {
         const filteredDatasets = state.datasets.filter((dataset) => dataset.id === datasetId);
         if (filteredDatasets.length > 0) {
             return {...filteredDatasets[0]};
         }
     },
-    lastDataset: (state: MainState) => state.datasets[state.datasets.length-1],
+    lastDataset: (state: MainState) => state.datasets[state.datasets.length - 1],
 };
 
 const {read} = getStoreAccessors<MainState, State>('');
@@ -36,6 +37,8 @@ export const readLoginError = read(getters.loginError);
 export const readToken = read(getters.token);
 export const readDatasets = read(getters.datasets);
 export const readQueries = read(getters.queries);
+export const readAccessGrants = read(getters.accessGrants);
+export const readAccessReceipts = read(getters.accessReceipts);
 export const readUserProfile = read(getters.userProfile);
 export const readFirstNotification = read(getters.firstNotification);
 export const readOneDataset = read(getters.oneDataset);

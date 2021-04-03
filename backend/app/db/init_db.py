@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 
+import app.crud.crud_user
 from app import crud, schemas
 from app.config import settings
 
@@ -16,7 +17,7 @@ def init_db(db: Session) -> None:
     # the tables un-commenting the next line
     # Base.metadata.create_all(bind=engine)
 
-    user = crud.user.get_by_email(db, email=settings.FIRST_SUPERUSER_EMAIL)
+    user = app.crud.user.user.get_by_email(db, email=settings.FIRST_SUPERUSER_EMAIL)
     if not user:
         user_in = schemas.UserCreate(
             email=settings.FIRST_SUPERUSER_EMAIL,
@@ -25,7 +26,7 @@ def init_db(db: Session) -> None:
             is_active=True,
             is_superuser=True,
         )
-        user = crud.user.create(db, obj_in=user_in)
+        user = app.crud.user.user.create(db, obj_in=user_in)
         print(user)
     else:
         print("user already created")

@@ -3,7 +3,9 @@ from enum import auto
 from typing import Optional, Union
 
 from fastapi_utils.enums import StrEnum
-from pydantic import BaseModel, PrivateAttr
+from pydantic import BaseModel
+
+from app.schemas.base import AllDBEntities
 
 
 class AccessDecision(StrEnum):
@@ -30,10 +32,10 @@ class AccessUpdate(AccessBase):
     pass
 
 
-class Access(AccessBase):
-    _sharer_id: int = PrivateAttr()
+class Access(AccessBase, AllDBEntities):
+    sharer_id: int
 
 
-class AccessGrantsDataset(BaseModel):
-    _access_id: int = PrivateAttr()
-    _dataset_id: int = PrivateAttr()
+class AccessGrantsDataset(AllDBEntities):
+    access_id: int
+    dataset_id: int

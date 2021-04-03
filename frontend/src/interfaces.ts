@@ -9,9 +9,34 @@
  * ---------------------------------------------------------------
  */
 
+export interface IAccess {
+  expiry?: string | number;
+  reveal_sharer?: boolean;
+
+  /** An enumeration. */
+  decision?: IAccessDecision;
+  decision_reason?: string;
+  sharer_id: number;
+}
+
+/**
+ * An enumeration.
+ */
+export enum IAccessDecision {
+  IYes = "yes",
+  INo = "no",
+  IMaybe = "maybe",
+  IPending = "pending",
+}
+
 export interface IBodyCreateFileApiV1FilesPost {
   /** @format binary */
   file: File;
+}
+
+export interface IBodyCreateQueryApiV1QueriesPost {
+  query_in: IQueryCreate;
+  dataset_id: IDatasetID;
 }
 
 export interface IBodyCreateUserOpenApiV1UsersOpenPost {
@@ -45,6 +70,11 @@ export interface IBodyUpdateUserMeApiV1UsersMePut {
   email?: string;
 }
 
+export interface IBothAccess {
+  access_grants?: IAccess[];
+  access_receipts?: IAccess[];
+}
+
 export interface IDataset {
   id: number;
 
@@ -58,7 +88,11 @@ export interface IDataset {
 export interface IDatasetCreate {
   title: string;
   description?: string;
-  fileIds: number[];
+  file_ids: number[];
+}
+
+export interface IDatasetID {
+  dataset_id?: number;
 }
 
 export interface IDatasetUpdate {
@@ -72,6 +106,7 @@ export interface IFile {
   /** @format date-time */
   created_at: string;
   name: string;
+  sharer_id: number;
 }
 
 export interface IHTTPValidationError {
@@ -99,6 +134,7 @@ export interface IQuery {
 
   /** @format json-string */
   payload?: string;
+  querier_id: number;
 }
 
 export interface IQueryCreate {

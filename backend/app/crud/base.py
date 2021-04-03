@@ -33,18 +33,18 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db.query(self.model).filter(self.model.id == id).first()
 
     def get_multi(
-        self,
-        db: Session,
-        *,
-        skip: int = 0,
-        limit: int = 100,
-        with_owner_id: Optional[int] = None,
+            self,
+            db: Session,
+            *,
+            skip: int = 0,
+            limit: int = 100,
+            with_owner_id: Optional[int] = None,
     ) -> List[ModelType]:
 
         q = db.query(self.model)
         if with_owner_id is not None:
             assert (
-                self.owner_attr is not None
+                    self.owner_attr is not None
             ), f"model {self.model.__name__} does not have owner attr"
 
             q = q.filter_by(**{self.owner_attr: with_owner_id})
@@ -52,17 +52,17 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return q.offset(skip).limit(limit).all()
 
     def create(
-        self,
-        db: Session,
-        *,
-        obj_in: CreateSchemaType,
-        with_owner_id: Optional[int] = None,
+            self,
+            db: Session,
+            *,
+            obj_in: CreateSchemaType,
+            with_owner_id: Optional[int] = None,
     ) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)
 
         if with_owner_id is not None:
             assert (
-                self.owner_attr is not None
+                    self.owner_attr is not None
             ), f"model {self.model.__name__} does not have owner attr"
             obj_in_data[self.owner_attr] = with_owner_id
         if self.owner_attr is not None and with_owner_id is None:
@@ -75,11 +75,11 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db_obj
 
     def update(
-        self,
-        db: Session,
-        *,
-        db_obj: ModelType,
-        obj_in: Union[UpdateSchemaType, Dict[str, Any]],
+            self,
+            db: Session,
+            *,
+            db_obj: ModelType,
+            obj_in: Union[UpdateSchemaType, Dict[str, Any]],
     ) -> ModelType:
         obj_data = jsonable_encoder(db_obj)
         if isinstance(obj_in, dict):

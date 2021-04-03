@@ -5,7 +5,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from app import crud, schemas
+from app import schemas, crud
 from app.api import deps
 from app.config import settings
 from app.core import security
@@ -20,7 +20,7 @@ router = APIRouter()
 
 @router.post("/login/access-token", response_model=schemas.Token)
 def login_access_token(
-    db: Session = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()
+        db: Session = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ) -> Any:
     """
     OAuth2 compatible token login, get an access token for future requests
@@ -51,9 +51,9 @@ def test_token(current_user: models.User = Depends(deps.get_current_user)) -> An
 
 @router.post("/reset-password/", response_model=schemas.Message)
 def reset_password(
-    token: str = Body(...),
-    new_password: str = Body(...),
-    db: Session = Depends(deps.get_db),
+        token: str = Body(...),
+        new_password: str = Body(...),
+        db: Session = Depends(deps.get_db),
 ) -> Any:
     """
     Reset password

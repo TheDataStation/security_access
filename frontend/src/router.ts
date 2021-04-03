@@ -31,6 +31,7 @@ export default new Router({
                 {
                     path: 'main',
                     component: () => import(/* webpackChunkName: "main" */ './views/main/Main.vue'),
+                    redirect: 'main/dashboard',
                     children: [
                         {
                             path: 'dashboard',
@@ -134,6 +135,31 @@ export default new Router({
                                 },
                             ],
                         },
+                        {
+                            path: 'accesses',
+                            component: () => import(/* webpackChunkName: "main-accesses" */ './views/main/accesses/Accesses.vue'),
+                            redirect: 'accesses/accesses/all',
+                            children: [
+                                {
+                                    path: 'accesses/all',
+                                    component: () => import(
+                                        /* webpackChunkName: "main-accesses-users" */ './views/main/accesses/ViewAccesses.vue'),
+                                },
+                                // {
+                                //     path: 'accesses/edit/:id',
+                                //     name: 'main-accesses-edit',
+                                //     component: () => import(
+                                //         /* webpackChunkName: "main-accesses-edit" */ './views/main/accesses/EditAccess.vue'),
+                                // },
+                                // {
+                                //     path: 'accesses/create',
+                                //     name: 'main-accesses-create',
+                                //     component: () => import(
+                                //         /* webpackChunkName: "main-accesses-create" */ './views/main/accesses/CreateAccess.vue'),
+                                // },
+                            ],
+                        },
+
                     ],
                 },
             ],

@@ -28,6 +28,14 @@
                             <v-list-tile-title>Queries</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
+                    <v-list-tile to="/main/accesses">
+                        <v-list-tile-action>
+                            <v-icon>admin_panel_settings</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>Accesses</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
                     <v-list-tile to="/main/profile/view">
                         <v-list-tile-action>
                             <v-icon>person</v-icon>
@@ -36,22 +44,22 @@
                             <v-list-tile-title>Profile</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
-                    <v-list-tile to="/main/profile/edit">
-                        <v-list-tile-action>
-                            <v-icon>edit</v-icon>
-                        </v-list-tile-action>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Edit Profile</v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                    <v-list-tile to="/main/profile/password">
-                        <v-list-tile-action>
-                            <v-icon>vpn_key</v-icon>
-                        </v-list-tile-action>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Change Password</v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
+<!--                    <v-list-tile to="/main/profile/edit">-->
+<!--                        <v-list-tile-action>-->
+<!--                            <v-icon>edit</v-icon>-->
+<!--                        </v-list-tile-action>-->
+<!--                        <v-list-tile-content>-->
+<!--                            <v-list-tile-title>Edit Profile</v-list-tile-title>-->
+<!--                        </v-list-tile-content>-->
+<!--                    </v-list-tile>-->
+<!--                    <v-list-tile to="/main/profile/password">-->
+<!--                        <v-list-tile-action>-->
+<!--                            <v-icon>vpn_key</v-icon>-->
+<!--                        </v-list-tile-action>-->
+<!--                        <v-list-tile-content>-->
+<!--                            <v-list-tile-title>Change Password</v-list-tile-title>-->
+<!--                        </v-list-tile-content>-->
+<!--                    </v-list-tile>-->
                 </v-list>
                 <v-divider></v-divider>
                 <!--                <v-list v-show="hasAdminAccess" subheader>-->
@@ -137,9 +145,9 @@
 import {Component, Vue} from 'vue-property-decorator';
 
 import {appName} from '@/env';
-import {readDashboardMiniDrawer, readDashboardShowDrawer} from '@/store/main/getters';
-import {commitSetDashboardMiniDrawer, commitSetDashboardShowDrawer} from '@/store/main/mutations';
-import {dispatchUserLogOut} from '@/store/main/actions';
+import {readDashboardMiniDrawer, readDashboardShowDrawer} from '@/store/getters';
+import {commitSetDashboardMiniDrawer, commitSetDashboardShowDrawer} from '@/store/mutations';
+import {dispatchUserLogOut} from '@/store/actions';
 
 const routeGuardMain = async (to, from, next) => {
     // if (to.path === '/main') {

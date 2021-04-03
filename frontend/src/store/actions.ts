@@ -4,12 +4,12 @@ import {getLocalToken, removeLocalToken, saveLocalToken} from '@/utils';
 import {AxiosError} from 'axios';
 import {getStoreAccessors} from 'typesafe-vuex';
 import {ActionContext} from 'vuex';
-import {State} from '../state';
 import {
     commitAddNotification,
     commitPushDataset,
     commitPushQuery,
     commitRemoveNotification,
+    commitSetAccesses,
     commitSetDataset,
     commitSetDatasets,
     commitSetLoggedIn,
@@ -19,12 +19,22 @@ import {
     commitSetToken,
     commitSetUserProfile,
 } from './mutations';
-import {AppNotification, MainState} from './state';
-import {IDatasetCreate, IDatasetUpdate, IQueryCreate, IQueryUpdate} from "@/interfaces";
+import {IDatasetCreate, IDatasetUpdate, IQueryCreate, IQueryUpdate} from '@/interfaces';
+import {AppNotification, MainState, State} from '@/store/index';
 
 type MainContext = ActionContext<MainState, State>;
 
 export const actions = {
+    async actionGetAccesses(context: MainContext) {
+        try {
+            const response = await api.getAccesses(context.rootState.main.token);
+            if (response) {
+                commitSetAccesses(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
     async actionGetQueries(context: MainContext) {
         try {
             const response = await api.getQueries(context.rootState.main.token);
@@ -264,4 +274,5 @@ export const dispatchCreateDataset = dispatch(actions.actionCreateDataset);
 export const dispatchUpdateDataset = dispatch(actions.actionUpdateDataset);
 export const dispatchCreateQuery = dispatch(actions.actionCreateQuery);
 export const dispatchGetQueries = dispatch(actions.actionGetQueries);
+export const dispatchGetAccesses = dispatch(actions.actionGetAccesses);
 

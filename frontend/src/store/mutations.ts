@@ -1,10 +1,13 @@
-import {AppNotification, MainState} from './state';
+import {AppNotification, MainState} from '@/store';
 import {getStoreAccessors} from 'typesafe-vuex';
-import {State} from '../state';
-import {IDataset, IQuery, IUser} from "@/interfaces";
+import {State} from '@/store';
+import {IAccess, IBothAccess, IDataset, IQuery, IUser} from '@/interfaces';
 
 
 export const mutations = {
+    setAccesses(state: MainState, payload: IBothAccess) {
+        state.accesses = payload;
+    },
     pushDataset(state: MainState, payload: IDataset) {
         state.datasets.push(payload);
     },
@@ -12,7 +15,7 @@ export const mutations = {
         state.datasets = payload;
     },
     setDataset(state: MainState, payload: IDataset) {
-        const idx = state.queries.findIndex(q => q.id == payload.id);
+        const idx = state.queries.findIndex((q) => q.id === payload.id);
         state.datasets[idx] = payload;
     },
     setQueries(state: MainState, payload: IQuery[]) {
@@ -22,7 +25,7 @@ export const mutations = {
         state.queries.push(payload);
     },
     setQuery(state: MainState, payload: IQuery) {
-        const idx = state.queries.findIndex(q => q.id == payload.id);
+        const idx = state.queries.findIndex((q) => q.id === payload.id);
         state.queries[idx] = payload;
     },
     setToken(state: MainState, payload: string) {
@@ -63,6 +66,7 @@ export const commitAddNotification = commit(mutations.addNotification);
 export const commitRemoveNotification = commit(mutations.removeNotification);
 export const commitSetDatasets = commit(mutations.setDatasets);
 export const commitSetQueries = commit(mutations.setQueries);
+export const commitSetAccesses = commit(mutations.setAccesses);
 export const commitSetDataset = commit(mutations.setDataset);
 export const commitSetQuery = commit(mutations.setQuery);
 export const commitPushDataset = commit(mutations.pushDataset);

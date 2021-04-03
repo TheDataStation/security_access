@@ -29,8 +29,8 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {readQueries} from '@/store/main/getters';
-import {dispatchGetQueries} from '@/store/main/actions';
+import {readQueries} from '@/store/getters';
+import {dispatchGetQueries} from '@/store/actions';
 
 @Component
 export default class Queries extends Vue {
