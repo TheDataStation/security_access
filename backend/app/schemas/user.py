@@ -9,7 +9,7 @@ from app.schemas.base import AllDBEntities
 class UserBase(BaseModel):
     email: Optional[EmailStr] = None
     is_active: Optional[bool] = True
-    is_superuser: bool = False
+    is_operator: bool = False
     full_name: Optional[str] = None
 
 

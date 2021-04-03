@@ -1,6 +1,6 @@
 from typing import Any, List
 
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic.networks import EmailStr
 from sqlalchemy.orm import Session
@@ -33,7 +33,7 @@ def create_user(
     db: Session = Depends(deps.get_db),
     user_in: schemas.UserCreate,
     _current_user: models.User = Depends(deps.get_current_active_superuser),
-) -> Any:
+) -> models.User:
     """
     Create new user.
     """
@@ -51,11 +51,11 @@ def create_user(
 def update_user_me(
     *,
     db: Session = Depends(deps.get_db),
-    password: str = Body(None),
-    full_name: str = Body(None),
-    email: EmailStr = Body(None),
+    password: str,
+    full_name: str,
+    email: EmailStr,
     current_user: models.User = Depends(deps.get_current_active_user),
-) -> Any:
+) -> models.User:
     """
     Update own user.
     """
@@ -75,7 +75,7 @@ def update_user_me(
 def read_user_me(
     _db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_active_user),
-) -> Any:
+) -> models.User:
     """
     Get current user.
     """
@@ -86,10 +86,10 @@ def read_user_me(
 def create_user_open(
     *,
     db: Session = Depends(deps.get_db),
-    password: str = Body(...),
-    email: EmailStr = Body(...),
-    full_name: str = Body(None),
-) -> Any:
+    password: str,
+    email: EmailStr,
+    full_name: str,
+) -> models.User:
     """
     Create new user without the need to be logged in.
     """
@@ -114,7 +114,7 @@ def read_user_by_id(
     user_id: int,
     current_user: models.User = Depends(deps.get_current_active_user),
     db: Session = Depends(deps.get_db),
-) -> Any:
+) -> models.User:
     """
     Get a specific user by id.
     """
@@ -135,7 +135,7 @@ def update_user(
     user_id: int,
     user_in: schemas.UserUpdate,
     _current_user: models.User = Depends(deps.get_current_active_superuser),
-) -> Any:
+) -> models.User:
     """
     Update a user.
     """

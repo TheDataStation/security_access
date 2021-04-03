@@ -10,13 +10,16 @@
  */
 
 export interface IAccess {
+  id: number;
+
+  /** @format date-time */
+  created_at: string;
   expiry?: string | number;
   reveal_sharer?: boolean;
 
   /** An enumeration. */
   decision?: IAccessDecision;
   decision_reason?: string;
-  sharer_id: number;
 }
 
 /**
@@ -27,6 +30,15 @@ export enum IAccessDecision {
   INo = "no",
   IMaybe = "maybe",
   IPending = "pending",
+}
+
+export interface IAccessUpdate {
+  expiry?: string | number;
+  reveal_sharer?: boolean;
+
+  /** An enumeration. */
+  decision?: IAccessDecision;
+  decision_reason?: string;
 }
 
 export interface IBodyCreateFileApiV1FilesPost {
@@ -144,6 +156,20 @@ export interface IQueryCreate {
 
   /** @format json-string */
   payload?: string;
+}
+
+export interface IQueryRequestsAccess {
+  expiry?: string | number;
+  reveal_input_data?: boolean;
+  reveal_querier?: boolean;
+  query_id: number;
+  access_id: number;
+}
+
+export interface IQueryRequestsAccessUpdate {
+  expiry?: string | number;
+  reveal_input_data?: boolean;
+  reveal_querier?: boolean;
 }
 
 /**

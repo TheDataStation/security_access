@@ -1,9 +1,11 @@
 from .access import (
+    AccessInDB,
     Access,
     AccessDecision,
     AccessCreate,
     AccessUpdate,
     AccessGrantsDataset,
+    AccessGrantsDatasetBase
 )
 from .dataset import Dataset, DatasetCreate, DatasetUpdate, File, FileInDB
 from .message import Message
@@ -13,6 +15,7 @@ from .query import (
     QueryUpdate,
     QueryUsesDataset,
     QueryRequestsAccess,
+    QueryRequestsAccessUpdate
 )
 from .token import Token, TokenPayload
 from .user import User, UserCreate, UserUpdate

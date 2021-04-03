@@ -34,6 +34,7 @@
                             name="file"
                             v-on:init="handleFilePondInit"
                             v-on:processfile="handleFilePondUploadFile"
+                            v-on:addfile="handleFilePondAddFile"
                         />
                     </v-form>
                 </template>
@@ -90,6 +91,13 @@ export default class CreateDataset extends Vue {
 
     public handleFilePondUploadFile(err, file) {
         this.fileIds.push(parseInt(file.serverId, 10));
+    }
+
+    public async handleFilePondAddFile(err, file) {
+        if (this.title === '') {
+            this.title = file.filename;
+            this.description = (await file.file.text()).slice(0, 100);
+        }
     }
 
     public async mounted() {

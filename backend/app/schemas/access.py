@@ -32,10 +32,16 @@ class AccessUpdate(AccessBase):
     pass
 
 
-class Access(AccessBase, AllDBEntities):
+class AccessInDB(AccessBase, AllDBEntities):
     sharer_id: int
 
+class Access(AccessBase, AllDBEntities):
+    pass
 
-class AccessGrantsDataset(AllDBEntities):
+
+class AccessGrantsDatasetBase(BaseModel):
     access_id: int
     dataset_id: int
+
+class AccessGrantsDataset(AccessGrantsDatasetBase, AllDBEntities):
+    pass

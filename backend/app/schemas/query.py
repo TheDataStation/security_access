@@ -57,3 +57,9 @@ class QueryRequestsAccess(BaseModel):
     reveal_querier: Optional[bool] = None
     query_id: int
     access_id: int
+
+class QueryRequestsAccessUpdate(BaseModel):
+    expiry: Optional[Union[datetime.datetime, datetime.timedelta]]
+    reveal_input_data: Optional[bool] = None
+    reveal_querier: Optional[bool] = None
+

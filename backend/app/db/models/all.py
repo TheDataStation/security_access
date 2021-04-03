@@ -108,8 +108,8 @@ class Access(Base):
     __tablename__ = 'access'
     __table_args__ = (
         CheckConstraint(
-            # this is actually an if then (a | b) <=> if a then b
-            "decision = 'maybe' OR (decision_reason IS NOT NULL AND length(decision_reason) > 0)"
+            # this is actually an if then (~a | b) <=> if a then b
+            "decision != 'maybe' OR (decision_reason IS NOT NULL AND length(decision_reason) > 0)"
         ),
     )
     id = Column(Integer, primary_key=True, index=True)

@@ -1,7 +1,7 @@
 from datetime import timedelta
 from typing import Any
 
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
@@ -20,7 +20,7 @@ router = APIRouter()
 
 @router.post("/login/access-token", response_model=schemas.Token)
 def login_access_token(
-        db: Session = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()
+    db: Session = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ) -> Any:
     """
     OAuth2 compatible token login, get an access token for future requests
@@ -33,16 +33,18 @@ def login_access_token(
     elif not user.is_active:
         raise HTTPException(status_code=400, detail="Inactive user")
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    return {
-        "access_token": security.create_access_token(
+    return schemas.Token(
+        access_token=security.create_access_token(
             user.id, expires_delta=access_token_expires
         ),
-        "token_type": "bearer",
-    }
+        token_type="bearer",
+    )
 
 
 @router.post("/login/test-token", response_model=schemas.User)
-def test_token(current_user: models.User = Depends(deps.get_current_user)) -> Any:
+def test_token(
+    current_user: models.User = Depends(deps.get_current_user),
+) -> schemas.User:
     """
     Test access token
     """
@@ -51,10 +53,10 @@ def test_token(current_user: models.User = Depends(deps.get_current_user)) -> An
 
 @router.post("/reset-password/", response_model=schemas.Message)
 def reset_password(
-        token: str = Body(...),
-        new_password: str = Body(...),
-        db: Session = Depends(deps.get_db),
-) -> Any:
+    token: str,
+    new_password: str,
+    db: Session = Depends(deps.get_db),
+) -> schemas.Message:
     """
     Reset password
     """
@@ -73,4 +75,4 @@ def reset_password(
     user.hashed_password = hashed_password
     db.add(user)
     db.commit()
-    return {"msg": "Password updated successfully"}
+    return schemas.Message(msg="Password updated successfully")
