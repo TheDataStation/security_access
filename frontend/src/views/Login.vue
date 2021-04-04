@@ -39,8 +39,8 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {appName} from '@/env';
-import {readLoginError} from '@/store/main/getters';
-import {dispatchLogIn} from '@/store/main/actions';
+import {readLoginError} from '@/store/getters';
+import {dispatchLogIn} from '@/store/actions';
 
 @Component
 export default class Login extends Vue {

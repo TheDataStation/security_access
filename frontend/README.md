@@ -31,5 +31,4 @@ npm run test:unit
 ```
 
 
-npx swagger-typescript-api -p ../backend/docs/openapi.json -n interfaces.ts --no-client --type-prefix I
-
+npx swagger-typescript-api -p ../backend/docs/openapi.json -o src -n interfaces.ts --no-client --type-prefix I

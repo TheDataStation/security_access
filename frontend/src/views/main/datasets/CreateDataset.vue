@@ -15,11 +15,13 @@
                             v-model="title"
                             label="Title"
                             required
+                            box
                         ></v-text-field>
                         <v-textarea
                             v-model="description"
                             auto-grow
                             label="Description"
+                            box
                         ></v-textarea>
                         <div class="subheading secondary--text text--lighten-2">Files</div>
                         <v-divider></v-divider>
@@ -32,6 +34,7 @@
                             name="file"
                             v-on:init="handleFilePondInit"
                             v-on:processfile="handleFilePondUploadFile"
+                            v-on:addfile="handleFilePondAddFile"
                         />
                     </v-form>
                 </template>
@@ -53,17 +56,17 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {dispatchCreateDataset, dispatchGetDatasets} from '@/store/main/actions';
+import {dispatchCreateDataset, dispatchGetDatasets} from '@/store/actions';
 
 // Import Vue FilePond
-import VueFilePond from "vue-filepond";
-import {setOptions} from "filepond";
+import VueFilePond from 'vue-filepond';
+import {setOptions} from 'filepond';
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
 import {api} from '@/api';
-import {readToken} from "@/store/main/getters";
-import {store} from '@/store'
-import {IDatasetCreate} from "@/interfaces";
+import {readToken} from '@/store/getters';
+import {store} from '@/store';
+import {IDatasetCreate} from '@/interfaces';
 
 
 const FilePond = VueFilePond();
@@ -87,7 +90,14 @@ export default class CreateDataset extends Vue {
     }
 
     public handleFilePondUploadFile(err, file) {
-        this.fileIds.push(parseInt(file.serverId));
+        this.fileIds.push(parseInt(file.serverId, 10));
+    }
+
+    public async handleFilePondAddFile(err, file) {
+        if (this.title === '') {
+            this.title = file.filename;
+            this.description = (await file.file.text()).slice(0, 100);
+        }
     }
 
     public async mounted() {
@@ -95,7 +105,7 @@ export default class CreateDataset extends Vue {
             server: {
                 url: api.uploadUrl,
                 ...api.authHeaders(readToken(store)),
-            }
+            },
         });
         await dispatchGetDatasets(this.$store);
 
@@ -119,12 +129,12 @@ export default class CreateDataset extends Vue {
             const createdDataset: IDatasetCreate = {
                 title: this.title,
                 description: '',
-                fileIds: this.fileIds,
+                file_ids: this.fileIds,
             };
             if (this.description) {
                 createdDataset.description = this.description;
             }
-            //TODO(max): on failure files don't get deleted server side
+            // TODO(max): on failure files don't get deleted server side
             await dispatchCreateDataset(this.$store, createdDataset);
             await this.$router.push('/main/datasets');
 

@@ -62,8 +62,8 @@
 <!--<script lang="ts">-->
 <!--import {Component, Vue} from 'vue-property-decorator';-->
 <!--import {IDatasetUpdate} from '@/interfaces';-->
-<!--import {dispatchGetDatasets, dispatchUpdateDataset} from '@/store/main/actions';-->
-<!--import {readOneDataset} from '@/store/main/getters';-->
+<!--import {dispatchGetDatasets, dispatchUpdateDataset} from '@/store/actions';-->
+<!--import {readOneDataset} from '@/store/getters';-->
 
 
 <!--// Import Vue FilePond-->

@@ -1,5 +1,4 @@
 from .all import (
-    AllEntities,
     User,
     File,
     Dataset,

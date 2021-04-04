@@ -23,12 +23,13 @@ def init_db(db: Session) -> None:
             # this doesn't work for some reason?
             password=settings.FIRST_SUPERUSER_PASSWORD,
             is_active=True,
-            is_superuser=True,
+            is_operator=True,
         )
         user = crud.user.create(db, obj_in=user_in)
-        print(user)
     else:
         print("user already created")
+
+
 
 
 def init() -> None:

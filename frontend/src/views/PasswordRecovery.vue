@@ -33,7 +33,7 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {appName} from '@/env';
-import {dispatchPasswordRecovery} from '@/store/main/actions';
+import {dispatchPasswordRecovery} from '@/store/actions';
 
 @Component
 export default class Login extends Vue {

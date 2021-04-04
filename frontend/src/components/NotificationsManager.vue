@@ -9,10 +9,10 @@
 </template>
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator';
-import {AppNotification} from '@/store/main/state';
-import {commitRemoveNotification} from '@/store/main/mutations';
-import {readFirstNotification} from '@/store/main/getters';
-import {dispatchRemoveNotification} from '@/store/main/actions';
+import {AppNotification} from '@/store';
+import {commitRemoveNotification} from '@/store/mutations';
+import {readFirstNotification} from '@/store/getters';
+import {dispatchRemoveNotification} from '@/store/actions';
 
 @Component
 export default class NotificationsManager extends Vue {

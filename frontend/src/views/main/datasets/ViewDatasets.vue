@@ -29,8 +29,8 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {readDatasets} from '@/store/main/getters';
-import {dispatchGetDatasets} from '@/store/main/actions';
+import {readDatasets} from '@/store/getters';
+import {dispatchGetDatasets} from '@/store/actions';
 
 @Component
 export default class Datasets extends Vue {

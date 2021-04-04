@@ -1,17 +1,17 @@
 from typing import Optional, List
 
-from pydantic import BaseModel, PrivateAttr
+from pydantic import BaseModel
 
 from app.schemas.base import AllDBEntities
 
 
 class File(AllDBEntities):
     name: str
-    _sharer_id: int = PrivateAttr()
+    sharer_id: int
 
 
 class FileInDB(File):
-    _dataset_id: int = PrivateAttr()
+    dataset_id: int
     url: str
 
 
@@ -38,4 +38,4 @@ class Dataset(DatasetCreate, AllDBEntities):
 
 # Properties stored in DB
 class DatasetInDB(DatasetCreate):
-    _sharer_id: int = PrivateAttr()
+    sharer_id: int

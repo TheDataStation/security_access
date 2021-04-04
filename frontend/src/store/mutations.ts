@@ -1,10 +1,18 @@
-import {AppNotification, MainState} from './state';
+import {AppNotification, MainState} from '@/store';
 import {getStoreAccessors} from 'typesafe-vuex';
-import {State} from '../state';
-import {IDataset, IQuery, IUser} from "@/interfaces";
+import {State} from '@/store';
+import {IAccess, IBothAccess, IDataset, IQuery, IQueryRequestsAccess, IUser} from '@/interfaces';
 
 
 export const mutations = {
+    setAccesses(state: MainState, payload: IBothAccess) {
+        state.accessGrants = payload.access_grants ? payload.access_grants : [];
+        state.accessReceipts = payload.access_receipts ? payload.access_receipts : [];
+    },
+    setAccessGrant(state: MainState, payload: IAccess) {
+        const idx = state.accessGrants.findIndex((q) => q.id === payload.id);
+        state.accessGrants[idx] = payload;
+    },
     pushDataset(state: MainState, payload: IDataset) {
         state.datasets.push(payload);
     },
@@ -12,8 +20,15 @@ export const mutations = {
         state.datasets = payload;
     },
     setDataset(state: MainState, payload: IDataset) {
-        const idx = state.queries.findIndex(q => q.id == payload.id);
+        const idx = state.queries.findIndex((q) => q.id === payload.id);
         state.datasets[idx] = payload;
+    },
+    setQueryRequests(state: MainState, payload: IQueryRequestsAccess[]) {
+        state.queryRequests = payload;
+    },
+    setQueryRequest(state: MainState, payload: IQueryRequestsAccess) {
+        const idx = state.queryRequests.findIndex((q) => q.id === payload.id);
+        state.queryRequests[idx] = payload;
     },
     setQueries(state: MainState, payload: IQuery[]) {
         state.queries = payload;
@@ -22,7 +37,7 @@ export const mutations = {
         state.queries.push(payload);
     },
     setQuery(state: MainState, payload: IQuery) {
-        const idx = state.queries.findIndex(q => q.id == payload.id);
+        const idx = state.queries.findIndex((q) => q.id === payload.id);
         state.queries[idx] = payload;
     },
     setToken(state: MainState, payload: string) {
@@ -63,8 +78,12 @@ export const commitAddNotification = commit(mutations.addNotification);
 export const commitRemoveNotification = commit(mutations.removeNotification);
 export const commitSetDatasets = commit(mutations.setDatasets);
 export const commitSetQueries = commit(mutations.setQueries);
+export const commitSetAccesses = commit(mutations.setAccesses);
+export const commitSetAccessGrant = commit(mutations.setAccessGrant);
 export const commitSetDataset = commit(mutations.setDataset);
 export const commitSetQuery = commit(mutations.setQuery);
 export const commitPushDataset = commit(mutations.pushDataset);
 export const commitPushQuery = commit(mutations.pushQuery);
+export const commitSetQueryRequest = commit(mutations.setQueryRequest);
+export const commitSetQueryRequests = commit(mutations.setQueryRequests);
 

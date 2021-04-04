@@ -60,33 +60,35 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {dispatchCreateDataset, dispatchCreateQuery, dispatchGetQueries} from '@/store/main/actions';
-import {IDatasetCreate, IQueryCreate, IQueryType} from "@/interfaces";
+import {dispatchCreateDataset, dispatchCreateQuery, dispatchGetQueries} from '@/store/actions';
+import {IDatasetCreate, IQueryCreate, IQueryType} from '@/interfaces';
 
 // Import Vue FilePond
-import VueFilePond from "vue-filepond";
+import VueFilePond from 'vue-filepond';
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
-import {setOptions} from "filepond";
-import {api} from "@/api";
-import {readLastDataset, readToken} from "@/store/main/getters";
-import {store} from "@/store";
+import {setOptions} from 'filepond';
+import {api} from '@/api';
+import {readLastDataset, readToken} from '@/store/getters';
+import {store} from '@/store';
 
 
 const FilePond = VueFilePond();
 
+/* tslint:disable:no-bitwise */
 function hashCode(str: string) {
-    var hash = 0;
-    if (str.length == 0) {
+    let hash = 0;
+    if (str.length === 0) {
         return hash;
     }
-    for (var i = 0; i < str.length; i++) {
-        var char = str.charCodeAt(i);
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
         hash = ((hash << 5) - hash) + char;
         hash = hash & hash; // Convert to 32bit integer
     }
     return hash.toString();
 }
+/* tslint:disable:no-bitwise */
 
 @Component({
     components: {
@@ -99,8 +101,8 @@ export default class CreateQuery extends Vue {
     public type: IQueryType = IQueryType.IOther;
     public description?: string = '';
     public fileIds: any[] = [];
-    public queryTypes = Object.keys(IQueryType).map(k => IQueryType[k as any].toUpperCase());
-    public payload: string = "";
+    public queryTypes = Object.keys(IQueryType).map((k) => IQueryType[k as any].toUpperCase());
+    public payload: string = '';
     // json
     private blindml = {
         task: {
@@ -128,7 +130,7 @@ export default class CreateQuery extends Vue {
             freshness: 'last_week',
             user: 'all_groups',
         },
-    }
+    };
 
     public handleFilePondInit() {
         // FilePond instance methods are available on `this.$refs.pond`
@@ -136,7 +138,7 @@ export default class CreateQuery extends Vue {
     }
 
     public handleFilePondUploadFile(err, file) {
-        this.fileIds.push(parseInt(file.serverId));
+        this.fileIds.push(parseInt(file.serverId, 10));
     }
 
     public async mounted() {
@@ -144,7 +146,7 @@ export default class CreateQuery extends Vue {
             server: {
                 url: api.uploadUrl,
                 ...api.authHeaders(readToken(store)),
-            }
+            },
         });
         await dispatchGetQueries(this.$store);
 
@@ -175,7 +177,7 @@ export default class CreateQuery extends Vue {
                 description: `${hashCode(this.payload)}`,
                 file_ids: this.fileIds,
             };
-            //TODO(max): on failure files don't get deleted server side
+            // TODO(max): on failure files don't get deleted server side
             await dispatchCreateDataset(this.$store, createdDataset);
             const dataset = readLastDataset(this.$store);
             await dispatchCreateQuery(this.$store, {query: createdQuery, datasetId: dataset.id});
@@ -185,4 +187,3 @@ export default class CreateQuery extends Vue {
     }
 }
 </script>
-
