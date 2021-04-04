@@ -9,28 +9,87 @@ import {
     commitPushDataset,
     commitPushQuery,
     commitRemoveNotification,
-    commitSetAccesses,
+    commitSetAccesses, commitSetAccessGrant,
     commitSetDataset,
     commitSetDatasets,
     commitSetLoggedIn,
     commitSetLogInError,
     commitSetQueries,
     commitSetQuery,
+    commitSetQueryRequest,
+    commitSetQueryRequests,
     commitSetToken,
     commitSetUserProfile,
 } from './mutations';
-import {IDatasetCreate, IDatasetUpdate, IQueryCreate, IQueryUpdate} from '@/interfaces';
+import {
+    IAccessUpdate,
+    IDatasetCreate,
+    IDatasetUpdate,
+    IQueryCreate,
+    IQueryRequestsAccessUpdate,
+    IQueryUpdate,
+} from '@/interfaces';
 import {AppNotification, MainState, State} from '@/store/index';
 
 type MainContext = ActionContext<MainState, State>;
 
 export const actions = {
+    async actionGetQueryRequests(context: MainContext) {
+        try {
+            const response = await api.getQueryRequestsAccesses(context.rootState.main.token);
+            if (response) {
+                commitSetQueryRequests(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    // async actionGetQueryRequestsByQuery(context: MainContext, queryId: number) {
+    //     try {
+    //         const response = await api.getQueryRequestsAccessesByQuery(context.rootState.main.token, queryId);
+    //         if (response) {
+    //             commitSetQueryRequests(context, response.data);
+    //         }
+    //     } catch (error) {
+    //         await dispatchCheckApiError(context, error);
+    //     }
+    // },
+    async actionUpdateQueryRequests(context: MainContext, payload: { id: number, query: IQueryRequestsAccessUpdate }) {
+        try {
+            const loadingNotification = {content: 'saving', showProgress: true};
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.updateQueryRequestsAccess(context.rootState.main.token, payload.id, payload.query),
+                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+            ]))[0];
+            commitSetQueryRequest(context, response.data);
+            commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, {content: 'Query Request successfully updated', color: 'success'});
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
     async actionGetAccesses(context: MainContext) {
         try {
             const response = await api.getAccesses(context.rootState.main.token);
             if (response) {
                 commitSetAccesses(context, response.data);
             }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionUpdateAccessGrant(context: MainContext, payload: { id: number, query: IAccessUpdate }) {
+        try {
+            const loadingNotification = {content: 'saving', showProgress: true};
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.updateAccessGrant(context.rootState.main.token, payload.id, payload.query),
+                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+            ]))[0];
+            commitSetAccessGrant(context, response.data);
+            commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, {content: 'Query successfully updated', color: 'success'});
         } catch (error) {
             await dispatchCheckApiError(context, error);
         }
@@ -270,9 +329,12 @@ export const dispatchRemoveNotification = dispatch(actions.removeNotification);
 export const dispatchPasswordRecovery = dispatch(actions.passwordRecovery);
 export const dispatchResetPassword = dispatch(actions.resetPassword);
 export const dispatchGetDatasets = dispatch(actions.actionGetDatasets);
+export const dispatchGetQueryRequests = dispatch(actions.actionGetQueryRequests);
+export const dispatchUpdateQueryRequests = dispatch(actions.actionUpdateQueryRequests);
 export const dispatchCreateDataset = dispatch(actions.actionCreateDataset);
 export const dispatchUpdateDataset = dispatch(actions.actionUpdateDataset);
 export const dispatchCreateQuery = dispatch(actions.actionCreateQuery);
 export const dispatchGetQueries = dispatch(actions.actionGetQueries);
 export const dispatchGetAccesses = dispatch(actions.actionGetAccesses);
+export const dispatchUpdateAccessGrant = dispatch(actions.actionUpdateAccessGrant);
 

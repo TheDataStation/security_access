@@ -10,7 +10,7 @@ from sqlalchemy import (
     DateTime,
     CheckConstraint,
     MetaData,
-    PrimaryKeyConstraint,
+    PrimaryKeyConstraint, UniqueConstraint,
 )
 from sqlalchemy.dialects.sqlite import JSON
 from sqlalchemy.ext.declarative import declared_attr, declarative_base
@@ -92,8 +92,9 @@ class QueryUsesDataset(Base):
 
 class QueryRequestsAccess(Base):
     __tablename__ = 'query_requests_access'
-    __table_args__ = (PrimaryKeyConstraint("query_id", "access_id"),)
+    __table_args__ = (UniqueConstraint("query_id", "access_id"),)
 
+    id = Column(Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=datetime.now())
 
     reveal_input_data = Column(Boolean, default=False)

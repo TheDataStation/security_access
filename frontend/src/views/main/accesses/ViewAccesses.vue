@@ -11,13 +11,14 @@
                 <td>{{ props.item.id }}</td>
                 <td>{{ props.item.created_at | dateParse('YYYY-MM-DDTHH:mm:ss') | dateFormat('YYYY-MM-DD') }}</td>
                 <td>{{ props.item.decision }}</td>
-                <td>{{ props.item.reveal_sharer }}</td>
+                <td>{{ props.item.reveal_sharer ? '✅' : '❌' }}</td>
                 <td>{{ props.item.decision_reason }}</td>
-                <td>{{ props.item.expiry ? (props.item.expiry | dateParse('YYYY-MM-DDTHH:mm:ss') | dateFormat('YYYY-MM-DD')) : 'never' }}</td>
+                <td v-if="props.item.expiry">{{ props.item.expiry | dateParse('YYYY-MM-DDTHH:mm') | dateFormat('YYYY-MM-DD') }}</td>
+                <td v-else>Never</td>
                 <td class="justify-center layout px-0">
                     <v-tooltip top>
                         <span>Edit</span>
-                        <v-btn slot="activator" :to="{name: 'main-datasets-edit', params: {id: props.item.id}}" flat>
+                        <v-btn slot="activator" :to="{name: 'main-accesses-edit', params: {id: props.item.id}}" flat>
                             <v-icon>edit</v-icon>
                         </v-btn>
                     </v-tooltip>
@@ -36,14 +37,15 @@
                 <td>{{ props.item.id }}</td>
                 <td>{{ props.item.created_at | dateParse('YYYY-MM-DDTHH:mm:ss') | dateFormat('YYYY-MM-DD') }}</td>
                 <td>{{ props.item.decision }}</td>
-                <td>{{ props.item.reveal_sharer }}</td>
+                <td>{{ props.item.reveal_sharer ? '✅' : '❌' }}</td>
                 <td>{{ props.item.decision_reason }}</td>
-                <td>{{ props.item.expiry ? (props.item.expiry | dateParse('YYYY-MM-DDTHH:mm:ss') | dateFormat('YYYY-MM-DD')) : 'never' }}</td>
+                <td v-if="props.item.expiry">{{ props.item.expiry | dateParse('YYYY-MM-DDTHH:mm') | dateFormat('YYYY-MM-DD') }}</td>
+                <td v-else>Never</td>
                 <td class="justify-center layout px-0">
                     <v-tooltip top>
                         <span>Edit</span>
-                        <v-btn slot="activator" :to="{name: 'main-datasets-edit', params: {id: props.item.id}}" flat>
-                            <v-icon>edit</v-icon>
+                        <v-btn slot="activator" :to="{name: 'main-accesses-view', params: {id: props.item.id}}" flat>
+                            <v-icon>search</v-icon>
                         </v-btn>
                     </v-tooltip>
                 </td>

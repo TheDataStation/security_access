@@ -112,7 +112,7 @@ def update_query(
     id: int,
     query_in: schemas.QueryUpdate,
     current_user: models.User = Depends(deps.get_current_active_user),
-) -> Any:
+) -> schemas.Query:
     """
     Update an query.
     """
@@ -133,7 +133,7 @@ def read_query(
     db: Session = Depends(deps.get_db),
     id: int,
     current_user: models.User = Depends(deps.get_current_active_user),
-) -> Any:
+) -> schemas.Query:
     """
     Get query by ID.
     """
@@ -153,7 +153,7 @@ def delete_query(
     db: Session = Depends(deps.get_db),
     id: int,
     current_user: models.User = Depends(deps.get_current_active_user),
-) -> Any:
+) -> schemas.Query:
     """
     Delete an query.
     """
@@ -168,63 +168,65 @@ def delete_query(
     return query
 
 
-@router.get("/{id}/requests_access", response_model=List[schemas.QueryRequestsAccess])
-def read_query_requests_access_for_query(
-    db: Session = Depends(deps.get_db),
-    *,
-    id: int,
-    skip: int = 0,
-    limit: int = 100,
-    current_user: models.User = Depends(deps.get_current_active_user),
-) -> Any:
-    if crud.user.is_operator(current_user):
-        query_requests_access = crud.query_requests_access.get_multi(
-            db=db, with_owner_id=id, skip=skip, limit=limit
-        )
-    else:
-        query_requests_access = crud.query_requests_access.get_multi(
-            db=db, with_owner_id=id, skip=skip, limit=limit
-        )
-        query_request_ids = [q.id for q in query_requests_access]
-        for query in get_queries_for_query_requests(db, query_request_ids):
-            if not query.querier_id != current_user.id:
-                raise HTTPException(
-                    status_code=400, detail="The user doesn't have enough privileges"
-                )
-    return query_requests_access
+# @router.get("/{id}/requests_access", response_model=List[schemas.QueryRequestsAccess])
+# def read_query_requests_access_for_query(
+#     db: Session = Depends(deps.get_db),
+#     *,
+#     id: int,
+#     skip: int = 0,
+#     limit: int = 100,
+#     current_user: models.User = Depends(deps.get_current_active_user),
+# ) -> List[schemas.QueryRequestsAccess]:
+#     if crud.user.is_operator(current_user):
+#         query_requests_access = crud.query_requests_access.get_multi(
+#             db=db, with_owner_id=id, skip=skip, limit=limit
+#         )
+#     else:
+#         query_requests_access = crud.query_requests_access.get_multi(
+#             db=db, with_owner_id=id, skip=skip, limit=limit
+#         )
+#         query_request_ids = [q.id for q in query_requests_access]
+#         for query in get_queries_for_query_requests(db, query_request_ids):
+#             if not query.querier_id != current_user.id:
+#                 raise HTTPException(
+#                     status_code=400, detail="The user doesn't have enough privileges"
+#                 )
+#     return query_requests_access
 
+query_requests_router = APIRouter()
 
-@router.get("/requests_access", response_model=List[schemas.QueryRequestsAccess])
+@query_requests_router.get("/", response_model=List[schemas.QueryRequestsAccess])
 def read_all_query_requests_access(
     db: Session = Depends(deps.get_db),
     *,
     skip: int = 0,
     limit: int = 100,
     current_user: models.User = Depends(deps.get_current_active_user),
-) -> Any:
+) -> List[schemas.QueryRequestsAccess]:
     query_requests_access = crud.query_requests_access.get_multi(
         db=db, skip=skip, limit=limit
     )
     if crud.user.is_operator(current_user):
         return query_requests_access
     else:
-        query_request_ids = [q.id for q in query_requests_access]
-        for query in get_queries_for_query_requests(db, query_request_ids):
-            if not query.querier_id != current_user.id:
+        query_ids = [q.query_id for q in query_requests_access]
+        # TODO(max): this can be just one join and a check
+        for query in db.query(models.Query).filter(models.Query.id.in_(query_ids)).all():
+            if query.querier_id != current_user.id:
                 raise HTTPException(
                     status_code=400, detail="The user doesn't have enough privileges"
                 )
     return query_requests_access
 
 
-@router.get("/requests_access/{id}", response_model=schemas.QueryRequestsAccess)
+@query_requests_router.put("/{id}", response_model=schemas.QueryRequestsAccess)
 def update_query_requests_access(
     db: Session = Depends(deps.get_db),
     *,
     id: int,
     query_requests_access_in: schemas.QueryRequestsAccessUpdate,
     current_user: models.User = Depends(deps.get_current_active_user),
-) -> Any:
+) -> schemas.QueryRequestsAccess:
     query_requests_access = crud.query_requests_access.get(db=db, id=id)
     if not query_requests_access:
         raise HTTPException(status_code=404, detail="Query request not found")
@@ -240,3 +242,5 @@ def update_query_requests_access(
         db=db, db_obj=query_requests_access, obj_in=query_requests_access_in
     )
     return query_requests_access
+
+router.include_router(query_requests_router, prefix="/requests_access", tags=["requests"])

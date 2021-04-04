@@ -16,7 +16,7 @@ class AccessDecision(StrEnum):
 
 
 class AccessBase(BaseModel):
-    expiry: Optional[Union[datetime.datetime, datetime.timedelta]] = None
+    expiry: Optional[Union[datetime.datetime, datetime.date, datetime.timedelta]] = None
     reveal_sharer: Optional[bool] = None
     decision: Optional[AccessDecision] = None
     decision_reason: Optional[str] = None

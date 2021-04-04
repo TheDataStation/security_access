@@ -15,7 +15,8 @@ from .query import (
     QueryUpdate,
     QueryUsesDataset,
     QueryRequestsAccess,
-    QueryRequestsAccessUpdate
+    QueryRequestsAccessUpdate,
+    QueryRequestsAccessCreate
 )
 from .token import Token, TokenPayload
 from .user import User, UserCreate, UserUpdate

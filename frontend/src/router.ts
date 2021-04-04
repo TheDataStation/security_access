@@ -119,19 +119,25 @@ export default new Router({
                                 {
                                     path: 'queries/all',
                                     component: () => import(
-                                        /* webpackChunkName: "main-queries-users" */ './views/main/queries/ViewQuery.vue'),
+                                        /* webpackChunkName: "main-queries-users" */ './views/main/queries/ViewQueries.vue'),
                                 },
-                                // {
-                                //     path: 'queries/edit/:id',
-                                //     name: 'main-queries-edit',
-                                //     component: () => import(
-                                //         /* webpackChunkName: "main-queries-edit" */ './views/main/queries/EditQuery.vue'),
-                                // },
+                                {
+                                    path: 'requests/edit/:id',
+                                    name: 'main-queries-requests-edit',
+                                    component: () => import(
+                                        /* webpackChunkName: "main-queries-requests-edit" */ './views/main/queries/EditQueryRequestsAccess.vue'),
+                                },
                                 {
                                     path: 'queries/create',
                                     name: 'main-queries-create',
                                     component: () => import(
                                         /* webpackChunkName: "main-queries-create" */ './views/main/queries/CreateQuery.vue'),
+                                },
+                                {
+                                    path: 'queries/:id',
+                                    name: 'main-queries-view',
+                                    component: () => import(
+                                        /* webpackChunkName: "main-queries-view" */ './views/main/queries/ViewQuery.vue'),
                                 },
                             ],
                         },
@@ -145,18 +151,18 @@ export default new Router({
                                     component: () => import(
                                         /* webpackChunkName: "main-accesses-users" */ './views/main/accesses/ViewAccesses.vue'),
                                 },
-                                // {
-                                //     path: 'accesses/edit/:id',
-                                //     name: 'main-accesses-edit',
-                                //     component: () => import(
-                                //         /* webpackChunkName: "main-accesses-edit" */ './views/main/accesses/EditAccess.vue'),
-                                // },
-                                // {
-                                //     path: 'accesses/create',
-                                //     name: 'main-accesses-create',
-                                //     component: () => import(
-                                //         /* webpackChunkName: "main-accesses-create" */ './views/main/accesses/CreateAccess.vue'),
-                                // },
+                                {
+                                    path: 'accesses/edit/:id',
+                                    name: 'main-accesses-edit',
+                                    component: () => import(
+                                        /* webpackChunkName: "main-accesses-edit" */ './views/main/accesses/EditAccessGrant.vue'),
+                                },
+                                {
+                                    path: 'accesses/:id',
+                                    name: 'main-accesses-view',
+                                    component: () => import(
+                                        /* webpackChunkName: "main-accesses-view" */ './views/main/accesses/ViewAccessReceipt.vue'),
+                                },
                             ],
                         },
 

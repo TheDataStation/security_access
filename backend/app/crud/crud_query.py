@@ -30,10 +30,10 @@ class CRUDQueryRequestsAccess(
     def create_query_requests_access_and_access(
         self, db: Session, *, query_id: int, dataset_id: int
     ) -> models.QueryRequestsAccess:
-        sharer_id, = (
+        (sharer_id,) = (
             db.query(models.Dataset.sharer_id)
-                .where(models.Dataset.id == dataset_id)
-                .one()
+            .where(models.Dataset.id == dataset_id)
+            .one()
         )
         access_db = crud_access.create(
             db, obj_in=schemas.AccessCreate(), with_owner_id=sharer_id
@@ -47,7 +47,7 @@ class CRUDQueryRequestsAccess(
         )
         return self.create(
             db,
-            obj_in=schemas.QueryRequestsAccess(
+            obj_in=schemas.QueryRequestsAccessCreate(
                 query_id=query_id, access_id=access_db.id
             ),
             with_owner_id=query_id,
@@ -69,7 +69,7 @@ def get_query_for_query_request(db: Session, query_request_id: int) -> models.Qu
         )
         .filter(models.QueryRequestsAccess.id == query_request_id)
     )
-    return join_query.all()
+    return join_query.one()
 
 
 def get_queries_for_query_requests(

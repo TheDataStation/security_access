@@ -14,7 +14,7 @@ export interface IAccess {
 
   /** @format date-time */
   created_at: string;
-  expiry?: string | number;
+  expiry?: string | string | number;
   reveal_sharer?: boolean;
 
   /** An enumeration. */
@@ -33,7 +33,7 @@ export enum IAccessDecision {
 }
 
 export interface IAccessUpdate {
-  expiry?: string | number;
+  expiry?: string | string | number;
   reveal_sharer?: boolean;
 
   /** An enumeration. */
@@ -51,14 +51,6 @@ export interface IBodyCreateQueryApiV1QueriesPost {
   dataset_id: IDatasetID;
 }
 
-export interface IBodyCreateUserOpenApiV1UsersOpenPost {
-  password: string;
-
-  /** @format email */
-  email: string;
-  full_name?: string;
-}
-
 export interface IBodyLoginAccessTokenApiV1LoginAccessTokenPost {
   /** @pattern password */
   grant_type?: string;
@@ -67,19 +59,6 @@ export interface IBodyLoginAccessTokenApiV1LoginAccessTokenPost {
   scope?: string;
   client_id?: string;
   client_secret?: string;
-}
-
-export interface IBodyResetPasswordApiV1ResetPasswordPost {
-  token: string;
-  new_password: string;
-}
-
-export interface IBodyUpdateUserMeApiV1UsersMePut {
-  password?: string;
-  full_name?: string;
-
-  /** @format email */
-  email?: string;
 }
 
 export interface IBothAccess {
@@ -159,7 +138,11 @@ export interface IQueryCreate {
 }
 
 export interface IQueryRequestsAccess {
-  expiry?: string | number;
+  id: number;
+
+  /** @format date-time */
+  created_at: string;
+  expiry?: string | string | number;
   reveal_input_data?: boolean;
   reveal_querier?: boolean;
   query_id: number;
@@ -167,7 +150,7 @@ export interface IQueryRequestsAccess {
 }
 
 export interface IQueryRequestsAccessUpdate {
-  expiry?: string | number;
+  expiry?: string | string | number;
   reveal_input_data?: boolean;
   reveal_querier?: boolean;
 }
@@ -225,7 +208,7 @@ export interface IUser {
   /** @format email */
   email?: string;
   is_active?: boolean;
-  is_superuser?: boolean;
+  is_operator?: boolean;
   full_name?: string;
 }
 
@@ -233,7 +216,7 @@ export interface IUserCreate {
   /** @format email */
   email: string;
   is_active?: boolean;
-  is_superuser?: boolean;
+  is_operator?: boolean;
   full_name?: string;
   password: string;
 }
@@ -242,7 +225,7 @@ export interface IUserUpdate {
   /** @format email */
   email?: string;
   is_active?: boolean;
-  is_superuser?: boolean;
+  is_operator?: boolean;
   full_name?: string;
   password?: string;
 }

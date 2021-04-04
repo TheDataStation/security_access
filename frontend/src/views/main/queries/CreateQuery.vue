@@ -88,9 +88,7 @@ function hashCode(str: string) {
     }
     return hash.toString();
 }
-
-/* tslint:enable:no-bitwise */
-
+/* tslint:disable:no-bitwise */
 
 @Component({
     components: {
@@ -174,23 +172,18 @@ export default class CreateQuery extends Vue {
                 type: this.type,
                 payload: this.payload,
             };
-            let datasetId: number | undefined;
-            if (this.fileIds.length > 0) {
-                const createdDataset: IDatasetCreate = {
-                    title: `query ${new Date().toJSON()}`,
-                    description: `${hashCode(this.payload)}`,
-                    file_ids: this.fileIds,
-                };
-                // TODO(max): on failure files don't get deleted server side
-                await dispatchCreateDataset(this.$store, createdDataset);
-                const dataset = readLastDataset(this.$store);
-                datasetId = dataset.id;
-            }
-            await dispatchCreateQuery(this.$store, {query: createdQuery, datasetId});
+            const createdDataset: IDatasetCreate = {
+                title: `query ${new Date().toJSON()}`,
+                description: `${hashCode(this.payload)}`,
+                file_ids: this.fileIds,
+            };
+            // TODO(max): on failure files don't get deleted server side
+            await dispatchCreateDataset(this.$store, createdDataset);
+            const dataset = readLastDataset(this.$store);
+            await dispatchCreateQuery(this.$store, {query: createdQuery, datasetId: dataset.id});
             await this.$router.push('/main/queries');
 
         }
     }
 }
 </script>
-

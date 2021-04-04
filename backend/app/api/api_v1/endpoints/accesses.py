@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 import app.crud.crud_access
 from app import schemas, crud
 from app.api import deps
-from app.api.api_v1.endpoints.queries import router
 from app.crud import get_accesses_for_queries
 from app.db import models
 
@@ -26,9 +25,6 @@ def read_access_grants(
         limit: int = 100,
         current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
-    """
-    Retrieve accessGrantsDatasetes.
-    """
     access_receipts = []
     if crud.user.is_operator(current_user):
         sharer_access_grants = app.crud.crud_access.access.get_multi(db, skip=skip, limit=limit)
@@ -48,7 +44,7 @@ def read_access_grants(
     )
 
 
-@router.put("/{id}", response_model=schemas.Query)
+@access_router.put("/{id}", response_model=schemas.Access)
 def update_access(
         *,
         db: Session = Depends(deps.get_db),

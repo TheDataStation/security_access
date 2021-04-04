@@ -3,27 +3,7 @@ import Vuex, {StoreOptions} from 'vuex';
 import {mutations} from './mutations';
 import {getters} from './getters';
 import {actions} from './actions';
-import {IBothAccess, IDataset, IQuery, IUser} from '@/interfaces';
-
-const defaultState: MainState = {
-    isLoggedIn: null,
-    token: '',
-    logInError: false,
-    userProfile: null,
-    dashboardMiniDrawer: false,
-    dashboardShowDrawer: true,
-    notifications: [],
-    datasets: [],
-    queries: [],
-    accesses: {},
-};
-
-export const mainModule = {
-    state: defaultState,
-    mutations,
-    actions,
-    getters,
-};
+import {IAccess, IDataset, IQuery, IQueryRequestsAccess, IUser} from '@/interfaces';
 
 
 export interface AppNotification {
@@ -42,13 +22,37 @@ export interface MainState {
     notifications: AppNotification[];
     datasets: IDataset[];
     queries: IQuery[];
-    accesses: IBothAccess;
+    queryRequests: IQueryRequestsAccess[];
+    accessGrants: IAccess[];
+    accessReceipts: IAccess[];
 }
 
 export interface State {
     main: MainState;
 }
 
+
+const defaultState: MainState = {
+    isLoggedIn: null,
+    token: '',
+    logInError: false,
+    userProfile: null,
+    dashboardMiniDrawer: false,
+    dashboardShowDrawer: true,
+    notifications: [],
+    datasets: [],
+    queries: [],
+    accessGrants: [],
+    accessReceipts: [],
+    queryRequests: [],
+};
+
+export const mainModule = {
+    state: defaultState,
+    mutations,
+    actions,
+    getters,
+};
 
 Vue.use(Vuex);
 
