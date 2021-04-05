@@ -2,7 +2,7 @@
     <v-container fluid>
         <v-card class="ma-3 pa-3">
             <v-card-title primary-title>
-                <div class="headline primary--text">Create Query</div>
+                <div class="headline primary--text">View Query</div>
             </v-card-title>
             <v-card-text>
                 <template>
@@ -60,20 +60,23 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import { IQueryType } from '@/interfaces';
 import { dispatchGetQueries } from '@/store/actions';
 import { readOneQuery } from '@/store/getters';
-import 'prismjs/components/prism-clike';
+
+// import Prism Editor
+import "prismjs";
+import { PrismEditor } from 'vue-prism-editor';
+import 'vue-prism-editor/dist/prismeditor.min.css'; // import the styles somewhere
+
 // import highlighting library (you can use any library you want just return html string)
-// noinspection ES6UnusedImports
 import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-json';
-import 'prismjs/themes/prism-tomorrow.css';
-import { PrismEditor } from 'vue-prism-editor'; // import syntax highlighting styles
-// import Prism Editor
-import 'vue-prism-editor/dist/prismeditor.min.css'; // import the styles somewhere
-import { Component, Vue } from 'vue-property-decorator';
+import 'prismjs/themes/prism-tomorrow.css'; // import syntax highlighting styles
+
 
 @Component({
   components: {
@@ -101,7 +104,7 @@ export default class ViewQuery extends Vue {
   }
 
   public highlighter(code) {
-    return highlight(code, languages.js); // languages.<insert language> to return html with markup
+    return highlight(code, languages.json); // languages.<insert language> to return html with markup
   }
 }
 </script>

@@ -56,6 +56,7 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import { api } from '@/api';
 import { IDatasetCreate, IQueryCreate, IQueryType } from '@/interfaces';
 import { store } from '@/store';
@@ -68,19 +69,20 @@ import { readLastDataset, readToken } from '@/store/getters';
 import { setOptions } from 'filepond';
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
-import 'prismjs/components/prism-clike';
-// import highlighting library (you can use any library you want just return html string)
-// noinspection ES6UnusedImports
-import { highlight, languages } from 'prismjs/components/prism-core';
-// import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-json';
-import 'prismjs/themes/prism-tomorrow.css'; // import syntax highlighting styles
 // Import Vue FilePond
 import VueFilePond from 'vue-filepond';
-import { PrismEditor } from 'vue-prism-editor'; // import syntax highlighting styles
+
 // import Prism Editor
+import "prismjs";
+import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css'; // import the styles somewhere
-import { Component, Vue } from 'vue-property-decorator';
+
+// import highlighting library (you can use any library you want just return html string)
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-json';
+import 'prismjs/themes/prism-tomorrow.css'; // import syntax highlighting styles
 
 const FilePond = VueFilePond();
 
