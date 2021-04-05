@@ -40,28 +40,32 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {dispatchGetAccesses} from '@/store/actions';
-import {readOneAccessReceipt} from '@/store/getters';
+import { dispatchGetAccesses } from '@/store/actions';
+import { readOneAccessReceipt } from '@/store/getters';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class ViewAccessReceipt extends Vue {
-    public decision?: string = '';
-    public expiry: string | number = '';
-    public decisionReason?: string = '';
-    public revealSharer?: boolean = false;
+  public decision?: string = '';
+  public expiry: string | number = '';
+  public decisionReason?: string = '';
+  public revealSharer?: boolean = false;
 
-    public async mounted() {
-        await dispatchGetAccesses(this.$store);
-        const access = readOneAccessReceipt(this.$store)(+this.$router.currentRoute.params.id);
-        this.decision = access!.decision;
-        this.expiry = access!.expiry ? access!.expiry : 'NEVER';
-        this.decisionReason = access!.decision_reason ? access!.decision_reason.toUpperCase() : '';
-        this.revealSharer = access!.reveal_sharer;
-    }
+  public async mounted() {
+    await dispatchGetAccesses(this.$store);
+    const access = readOneAccessReceipt(this.$store)(
+      +this.$router.currentRoute.params.id,
+    );
+    this.decision = access!.decision;
+    this.expiry = access!.expiry ? access!.expiry : 'NEVER';
+    this.decisionReason = access!.decision_reason
+      ? access!.decision_reason.toUpperCase()
+      : '';
+    this.revealSharer = access!.reveal_sharer;
+  }
 
-    public cancel() {
-        this.$router.back();
-    }
+  public cancel() {
+    this.$router.back();
+  }
 }
 </script>

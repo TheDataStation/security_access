@@ -54,95 +54,95 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {readQueries, readQueryRequests} from '@/store/getters';
-import {dispatchGetQueries, dispatchGetQueryRequests} from '@/store/actions';
+import { dispatchGetQueries, dispatchGetQueryRequests } from '@/store/actions';
+import { readQueries, readQueryRequests } from '@/store/getters';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Queries extends Vue {
-    public queryHeaders = [
-        {
-            text: 'id',
-            sortable: true,
-            value: 'id',
-            align: 'left',
-        },
-        {
-            text: 'Created at',
-            sortable: true,
-            value: 'created_at',
-            align: 'left',
-        },
-        {
-            text: 'Type',
-            sortable: true,
-            value: 'type',
-            align: 'left',
-        },
-        {
-            text: 'Description',
-            sortable: true,
-            value: 'description',
-            align: 'left',
-        },
-        // {
-        //     text: 'File IDs',
-        //     sortable: true,
-        //     value: 'file_ids',
-        //     align: 'left',
-        // },
-    ];
+  public queryHeaders = [
+    {
+      text: 'id',
+      sortable: true,
+      value: 'id',
+      align: 'left',
+    },
+    {
+      text: 'Created at',
+      sortable: true,
+      value: 'created_at',
+      align: 'left',
+    },
+    {
+      text: 'Type',
+      sortable: true,
+      value: 'type',
+      align: 'left',
+    },
+    {
+      text: 'Description',
+      sortable: true,
+      value: 'description',
+      align: 'left',
+    },
+    // {
+    //     text: 'File IDs',
+    //     sortable: true,
+    //     value: 'file_ids',
+    //     align: 'left',
+    // },
+  ];
 
-    public queryRequestHeaders = [
-        {
-            text: 'id',
-            sortable: true,
-            value: 'id',
-            align: 'left',
-        },
-        {
-            text: 'Created at',
-            sortable: true,
-            value: 'created_at',
-            align: 'left',
-        },
-        {
-            text: 'Expiry',
-            sortable: true,
-            value: 'expiry',
-            align: 'left',
-        },
-        {
-            text: 'Reveal input data',
-            sortable: true,
-            value: 'reveal_input_data',
-            align: 'left',
-        },
-        {
-            text: 'Reveal querier',
-            sortable: true,
-            value: 'reveal_querier',
-            align: 'left',
-        },
-        // {
-        //     text: 'File IDs',
-        //     sortable: true,
-        //     value: 'file_ids',
-        //     align: 'left',
-        // },
-    ];
+  public queryRequestHeaders = [
+    {
+      text: 'id',
+      sortable: true,
+      value: 'id',
+      align: 'left',
+    },
+    {
+      text: 'Created at',
+      sortable: true,
+      value: 'created_at',
+      align: 'left',
+    },
+    {
+      text: 'Expiry',
+      sortable: true,
+      value: 'expiry',
+      align: 'left',
+    },
+    {
+      text: 'Reveal input data',
+      sortable: true,
+      value: 'reveal_input_data',
+      align: 'left',
+    },
+    {
+      text: 'Reveal querier',
+      sortable: true,
+      value: 'reveal_querier',
+      align: 'left',
+    },
+    // {
+    //     text: 'File IDs',
+    //     sortable: true,
+    //     value: 'file_ids',
+    //     align: 'left',
+    // },
+  ];
 
-    get queries() {
-        return readQueries(this.$store);
-    }
+  get queries() {
+    return readQueries(this.$store);
+  }
 
-    get queryRequests() {
-        return readQueryRequests(this.$store);
-    }
+  get queryRequests() {
+    return readQueryRequests(this.$store);
+  }
 
-    public async mounted() {
-        await dispatchGetQueries(this.$store);
-        await dispatchGetQueryRequests(this.$store);
-    }
+  public async mounted() {
+    await dispatchGetQueries(this.$store);
+    await dispatchGetQueryRequests(this.$store);
+  }
 }
 </script>

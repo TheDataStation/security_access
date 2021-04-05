@@ -62,62 +62,74 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {IAccessDecision, IAccessUpdate, IQueryType} from '@/interfaces';
-import {dispatchGetAccesses, dispatchUpdateAccessGrant} from '@/store/actions';
-import {readOneAccessGrant} from '@/store/getters';
-
+import { IAccessDecision, IAccessUpdate, IQueryType } from '@/interfaces';
+import {
+  dispatchGetAccesses,
+  dispatchUpdateAccessGrant,
+} from '@/store/actions';
+import { readOneAccessGrant } from '@/store/getters';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class EditAccessGrant extends Vue {
-    public menu = false;
-    public loading = false;
-    public expiry: string | number = '';
-    public revealSharer = false;
-    public decision: IAccessDecision = IAccessDecision.IPending;
-    public decisionReason: string = '';
-    public decisions = Object.keys(IAccessDecision).map((k) => IAccessDecision[k as any].toUpperCase());
+  public menu = false;
+  public loading = false;
+  public expiry: string | number = '';
+  public revealSharer = false;
+  public decision: IAccessDecision = IAccessDecision.IPending;
+  public decisionReason: string = '';
+  public decisions = Object.keys(IAccessDecision).map((k) =>
+    IAccessDecision[k as any].toUpperCase(),
+  );
 
-    get accessGrant() {
-        return readOneAccessGrant(this.$store)(+this.$router.currentRoute.params.id);
-    }
+  get accessGrant() {
+    return readOneAccessGrant(this.$store)(
+      +this.$router.currentRoute.params.id,
+    );
+  }
 
-    public async mounted() {
-        await dispatchGetAccesses(this.$store);
-        this.reset();
-    }
+  public async mounted() {
+    await dispatchGetAccesses(this.$store);
+    this.reset();
+  }
 
-    public reset() {
-        this.expiry = '';
-        this.revealSharer = false;
-        if (this.accessGrant) {
-            this.expiry = this.accessGrant.expiry ? this.accessGrant.expiry : '';
-            this.revealSharer = this.accessGrant.reveal_sharer ? this.accessGrant.reveal_sharer : false;
-            this.decision = this.accessGrant.decision ? this.accessGrant.decision : IAccessDecision.IMaybe;
-            this.decisionReason = this.accessGrant.decision_reason ? this.accessGrant.decision_reason : '';
-        }
+  public reset() {
+    this.expiry = '';
+    this.revealSharer = false;
+    if (this.accessGrant) {
+      this.expiry = this.accessGrant.expiry ? this.accessGrant.expiry : '';
+      this.revealSharer = this.accessGrant.reveal_sharer
+        ? this.accessGrant.reveal_sharer
+        : false;
+      this.decision = this.accessGrant.decision
+        ? this.accessGrant.decision
+        : IAccessDecision.IMaybe;
+      this.decisionReason = this.accessGrant.decision_reason
+        ? this.accessGrant.decision_reason
+        : '';
     }
+  }
 
-    public cancel() {
-        this.$router.back();
-    }
+  public cancel() {
+    this.$router.back();
+  }
 
-    public async submit() {
-        const updatedAccessGrant: IAccessUpdate = {};
-        if (this.expiry) {
-            updatedAccessGrant.expiry = this.expiry;
-        }
-        if (this.revealSharer) {
-            updatedAccessGrant.reveal_sharer = this.revealSharer;
-        }
-        if (this.decisionReason) {
-            updatedAccessGrant.decision_reason = this.decisionReason;
-        }
-        await dispatchUpdateAccessGrant(this.$store, {
-            id: this.accessGrant!.id,
-            query: updatedAccessGrant,
-        });
-        this.$router.push('/main/accesses');
+  public async submit() {
+    const updatedAccessGrant: IAccessUpdate = {};
+    if (this.expiry) {
+      updatedAccessGrant.expiry = this.expiry;
     }
+    if (this.revealSharer) {
+      updatedAccessGrant.reveal_sharer = this.revealSharer;
+    }
+    if (this.decisionReason) {
+      updatedAccessGrant.decision_reason = this.decisionReason;
+    }
+    await dispatchUpdateAccessGrant(this.$store, {
+      id: this.accessGrant!.id,
+      query: updatedAccessGrant,
+    });
+    this.$router.push('/main/accesses');
+  }
 }
 </script>

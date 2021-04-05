@@ -8,21 +8,21 @@
 </template>
 
 <script lang="ts">
-import {Component, Emit, Prop, Vue} from 'vue-property-decorator';
+import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class UploadButton extends Vue {
-    @Prop(String) public color: string | undefined;
-    @Prop({default: false}) public multiple!: boolean;
+  @Prop(String) public color: string | undefined;
+  @Prop({ default: false }) public multiple!: boolean;
 
-    @Emit()
-    public files(e): FileList {
-        return e.target.files;
-    }
+  @Emit()
+  public files(e): FileList {
+    return e.target.files;
+  }
 
-    public trigger() {
-        (this.$refs.fileInput as HTMLElement).click();
-    }
+  public trigger() {
+    (this.$refs.fileInput as HTMLElement).click();
+  }
 }
 </script>
 

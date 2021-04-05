@@ -55,60 +55,60 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {readAccessGrants, readAccessReceipts} from '@/store/getters';
-import {dispatchGetAccesses} from '@/store/actions';
+import { dispatchGetAccesses } from '@/store/actions';
+import { readAccessGrants, readAccessReceipts } from '@/store/getters';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Accesses extends Vue {
-    public headers = [
-        {
-            text: 'id',
-            sortable: true,
-            value: 'id',
-            align: 'left',
-        },
-        {
-            text: 'Created at',
-            sortable: true,
-            value: 'created_at',
-            align: 'left',
-        },
-        {
-            text: 'Decision',
-            sortable: true,
-            value: 'decision',
-            align: 'left',
-        },
-        {
-            text: 'Reveal sharer',
-            sortable: true,
-            value: 'reveal_sharer',
-            align: 'left',
-        },
-        {
-            text: 'Decision reason',
-            sortable: true,
-            value: 'decision_reason',
-            align: 'left',
-        },
-        {
-            text: 'Expiry',
-            sortable: true,
-            value: 'expiry',
-            align: 'left',
-        },
-    ];
+  public headers = [
+    {
+      text: 'id',
+      sortable: true,
+      value: 'id',
+      align: 'left',
+    },
+    {
+      text: 'Created at',
+      sortable: true,
+      value: 'created_at',
+      align: 'left',
+    },
+    {
+      text: 'Decision',
+      sortable: true,
+      value: 'decision',
+      align: 'left',
+    },
+    {
+      text: 'Reveal sharer',
+      sortable: true,
+      value: 'reveal_sharer',
+      align: 'left',
+    },
+    {
+      text: 'Decision reason',
+      sortable: true,
+      value: 'decision_reason',
+      align: 'left',
+    },
+    {
+      text: 'Expiry',
+      sortable: true,
+      value: 'expiry',
+      align: 'left',
+    },
+  ];
 
-    get accessGrants() {
-        return readAccessGrants(this.$store);
-    }
-    get accessReceipts() {
-        return readAccessReceipts(this.$store);
-    }
+  get accessGrants() {
+    return readAccessGrants(this.$store);
+  }
+  get accessReceipts() {
+    return readAccessReceipts(this.$store);
+  }
 
-    public async mounted() {
-        await dispatchGetAccesses(this.$store);
-    }
+  public async mounted() {
+    await dispatchGetAccesses(this.$store);
+  }
 }
 </script>

@@ -54,64 +54,73 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {IQueryRequestsAccessUpdate} from '@/interfaces';
-import {dispatchGetQueryRequests, dispatchUpdateQueryRequests} from '@/store/actions';
-import {readOneQueryRequest} from '@/store/getters';
-
+import { IQueryRequestsAccessUpdate } from '@/interfaces';
+import {
+  dispatchGetQueryRequests,
+  dispatchUpdateQueryRequests,
+} from '@/store/actions';
+import { readOneQueryRequest } from '@/store/getters';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class EditQueryRequestsAccess extends Vue {
-    public menu = false;
-    public loading = false;
-    public createdAt = '';
-    public expiry: string | number = '';
-    public revealInputData = false;
-    public revealQuerier = false;
+  public menu = false;
+  public loading = false;
+  public createdAt = '';
+  public expiry: string | number = '';
+  public revealInputData = false;
+  public revealQuerier = false;
 
+  get queryRequestsAccess() {
+    return readOneQueryRequest(this.$store)(
+      +this.$router.currentRoute.params.id,
+    );
+  }
 
-    get queryRequestsAccess() {
-        return readOneQueryRequest(this.$store)(+this.$router.currentRoute.params.id);
+  public async mounted() {
+    await dispatchGetQueryRequests(this.$store);
+    this.reset();
+  }
+
+  public reset() {
+    this.createdAt = '';
+    this.expiry = '';
+    this.revealInputData = false;
+    this.revealQuerier = false;
+    if (this.queryRequestsAccess) {
+      this.createdAt = this.queryRequestsAccess.created_at;
+      this.expiry = this.queryRequestsAccess.expiry
+        ? this.queryRequestsAccess.expiry
+        : '';
+      this.revealInputData = this.queryRequestsAccess.reveal_input_data
+        ? this.queryRequestsAccess.reveal_input_data
+        : false;
+      this.revealQuerier = this.queryRequestsAccess.reveal_querier
+        ? this.queryRequestsAccess.reveal_querier
+        : false;
     }
+  }
 
-    public async mounted() {
-        await dispatchGetQueryRequests(this.$store);
-        this.reset();
-    }
+  public cancel() {
+    this.$router.back();
+  }
 
-    public reset() {
-        this.createdAt = '';
-        this.expiry = '';
-        this.revealInputData = false;
-        this.revealQuerier = false;
-        if (this.queryRequestsAccess) {
-            this.createdAt = this.queryRequestsAccess.created_at;
-            this.expiry = this.queryRequestsAccess.expiry ? this.queryRequestsAccess.expiry : '';
-            this.revealInputData = this.queryRequestsAccess.reveal_input_data ? this.queryRequestsAccess.reveal_input_data : false;
-            this.revealQuerier = this.queryRequestsAccess.reveal_querier ? this.queryRequestsAccess.reveal_querier : false;
-        }
+  public async submit() {
+    const updatedQueryRequest: IQueryRequestsAccessUpdate = {};
+    if (this.expiry) {
+      updatedQueryRequest.expiry = this.expiry;
     }
-
-    public cancel() {
-        this.$router.back();
+    if (this.revealInputData) {
+      updatedQueryRequest.reveal_input_data = this.revealInputData;
     }
-
-    public async submit() {
-        const updatedQueryRequest: IQueryRequestsAccessUpdate = {};
-        if (this.expiry) {
-            updatedQueryRequest.expiry = this.expiry;
-        }
-        if (this.revealInputData) {
-            updatedQueryRequest.reveal_input_data = this.revealInputData;
-        }
-        if (this.revealQuerier) {
-            updatedQueryRequest.reveal_querier = this.revealQuerier;
-        }
-        await dispatchUpdateQueryRequests(this.$store, {
-            id: this.queryRequestsAccess!.id,
-            query: updatedQueryRequest,
-        });
-        this.$router.push('/main/queryRequests');
+    if (this.revealQuerier) {
+      updatedQueryRequest.reveal_querier = this.revealQuerier;
     }
+    await dispatchUpdateQueryRequests(this.$store, {
+      id: this.queryRequestsAccess!.id,
+      query: updatedQueryRequest,
+    });
+    this.$router.push('/main/queryRequests');
+  }
 }
 </script>

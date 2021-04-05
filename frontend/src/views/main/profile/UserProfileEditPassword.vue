@@ -50,38 +50,38 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {IUserUpdate} from '@/interfaces';
-import {readUserProfile} from '@/store/getters';
-import {dispatchUpdateUserProfile} from '@/store/actions';
+import { IUserUpdate } from '@/interfaces';
+import { dispatchUpdateUserProfile } from '@/store/actions';
+import { readUserProfile } from '@/store/getters';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class UserProfileEdit extends Vue {
-    public valid = true;
-    public password1 = '';
-    public password2 = '';
+  public valid = true;
+  public password1 = '';
+  public password2 = '';
 
-    get userProfile() {
-        return readUserProfile(this.$store);
-    }
+  get userProfile() {
+    return readUserProfile(this.$store);
+  }
 
-    public reset() {
-        this.password1 = '';
-        this.password2 = '';
-        this.$validator.reset();
-    }
+  public reset() {
+    this.password1 = '';
+    this.password2 = '';
+    this.$validator.reset();
+  }
 
-    public cancel() {
-        this.$router.back();
-    }
+  public cancel() {
+    this.$router.back();
+  }
 
-    public async submit() {
-        if (await this.$validator.validateAll()) {
-            const updatedProfile: IUserUpdate = {};
-            updatedProfile.password = this.password1;
-            await dispatchUpdateUserProfile(this.$store, updatedProfile);
-            await this.$router.push('/main/profile');
-        }
+  public async submit() {
+    if (await this.$validator.validateAll()) {
+      const updatedProfile: IUserUpdate = {};
+      updatedProfile.password = this.password1;
+      await dispatchUpdateUserProfile(this.$store, updatedProfile);
+      await this.$router.push('/main/profile');
     }
+  }
 }
 </script>

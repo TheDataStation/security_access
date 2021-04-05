@@ -142,62 +142,68 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 
-import {appName} from '@/env';
-import {readDashboardMiniDrawer, readDashboardShowDrawer} from '@/store/getters';
-import {commitSetDashboardMiniDrawer, commitSetDashboardShowDrawer} from '@/store/mutations';
-import {dispatchUserLogOut} from '@/store/actions';
+import { appName } from '@/env';
+import { dispatchUserLogOut } from '@/store/actions';
+import {
+  readDashboardMiniDrawer,
+  readDashboardShowDrawer,
+} from '@/store/getters';
+import {
+  commitSetDashboardMiniDrawer,
+  commitSetDashboardShowDrawer,
+} from '@/store/mutations';
 
 const routeGuardMain = async (to, from, next) => {
-    // if (to.path === '/main') {
-    //     next('/main/dashboard');
-    // } else {
-    //     next();
-    // }
-    next();
+  // if (to.path === '/main') {
+  //     next('/main/dashboard');
+  // } else {
+  //     next();
+  // }
+  next();
 };
 
 @Component
 export default class Main extends Vue {
-    public appName = appName;
+  public appName = appName;
 
-    get miniDrawer() {
-        return readDashboardMiniDrawer(this.$store);
-    }
+  get miniDrawer() {
+    return readDashboardMiniDrawer(this.$store);
+  }
 
-    get showDrawer() {
-        return readDashboardShowDrawer(this.$store);
-    }
+  get showDrawer() {
+    return readDashboardShowDrawer(this.$store);
+  }
 
-    set showDrawer(value) {
-        commitSetDashboardShowDrawer(this.$store, value);
-    }
+  set showDrawer(value) {
+    commitSetDashboardShowDrawer(this.$store, value);
+  }
 
-    public beforeRouteEnter(to, from, next) {
-        routeGuardMain(to, from, next);
-    }
+  public beforeRouteEnter(to, from, next) {
+    routeGuardMain(to, from, next);
+  }
 
-    public beforeRouteUpdate(to, from, next) {
-        routeGuardMain(to, from, next);
-    }
+  public beforeRouteUpdate(to, from, next) {
+    routeGuardMain(to, from, next);
+  }
 
-    public switchShowDrawer() {
-        commitSetDashboardShowDrawer(
-            this.$store,
-            !readDashboardShowDrawer(this.$store),
-        );
-    }
+  public switchShowDrawer() {
+    commitSetDashboardShowDrawer(
+      this.$store,
+      !readDashboardShowDrawer(this.$store),
+    );
+  }
 
-    public switchMiniDrawer() {
-        commitSetDashboardMiniDrawer(
-            this.$store,
-            !readDashboardMiniDrawer(this.$store),
-        );
-    }
+  public switchMiniDrawer() {
+    commitSetDashboardMiniDrawer(
+      this.$store,
+      !readDashboardMiniDrawer(this.$store),
+    );
+  }
 
-    public async logout() {
-        await dispatchUserLogOut(this.$store);
-    }
+  public async logout() {
+    await dispatchUserLogOut(this.$store);
+  }
 }
 </script>

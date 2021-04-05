@@ -3,36 +3,36 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {store} from '@/store';
-import {dispatchCheckLoggedIn} from '@/store/actions';
-import {readIsLoggedIn} from '@/store/getters';
+import { store } from '@/store';
+import { dispatchCheckLoggedIn } from '@/store/actions';
+import { readIsLoggedIn } from '@/store/getters';
+import { Component, Vue } from 'vue-property-decorator';
 
 const startRouteGuard = async (to, from, next) => {
-    await dispatchCheckLoggedIn(store);
-    if (readIsLoggedIn(store)) {
-        if (to.path === '/login' || to.path === '/') {
-            next('/main');
-        } else {
-            next();
-        }
-    } else if (readIsLoggedIn(store) === false) {
-        if (to.path === '/' || (to.path as string).startsWith('/main')) {
-            next('/login');
-        } else {
-            next();
-        }
+  await dispatchCheckLoggedIn(store);
+  if (readIsLoggedIn(store)) {
+    if (to.path === '/login' || to.path === '/') {
+      next('/main');
+    } else {
+      next();
     }
+  } else if (readIsLoggedIn(store) === false) {
+    if (to.path === '/' || (to.path as string).startsWith('/main')) {
+      next('/login');
+    } else {
+      next();
+    }
+  }
 };
 
 @Component
 export default class Start extends Vue {
-    public beforeRouteEnter(to, from, next) {
-        startRouteGuard(to, from, next);
-    }
+  public beforeRouteEnter(to, from, next) {
+    startRouteGuard(to, from, next);
+  }
 
-    public beforeRouteUpdate(to, from, next) {
-        startRouteGuard(to, from, next);
-    }
+  public beforeRouteUpdate(to, from, next) {
+    startRouteGuard(to, from, next);
+  }
 }
 </script>

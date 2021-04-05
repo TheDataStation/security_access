@@ -12,9 +12,10 @@
     "quotemark": [true, "single"],
     "indent": [true, "spaces", 2],
     "interface-name": false,
-    "ordered-imports": false,
+    "ordered-imports": true,
     "object-literal-sort-keys": false,
     "no-consecutive-blank-lines": false,
-    "max-line-length": false
+    "max-line-length": false,
+    "trailing-comma": false
   }
 }

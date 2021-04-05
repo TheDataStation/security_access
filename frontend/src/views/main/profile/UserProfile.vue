@@ -29,21 +29,21 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {readUserProfile} from '@/store/getters';
+import { readUserProfile } from '@/store/getters';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class UserProfile extends Vue {
-    get userProfile() {
-        return readUserProfile(this.$store);
-    }
+  get userProfile() {
+    return readUserProfile(this.$store);
+  }
 
-    public goToEdit() {
-        this.$router.push('/main/profile/edit');
-    }
+  public goToEdit() {
+    this.$router.push('/main/profile/edit');
+  }
 
-    public goToPassword() {
-        this.$router.push('/main/profile/password');
-    }
+  public goToPassword() {
+    this.$router.push('/main/profile/password');
+  }
 }
 </script>

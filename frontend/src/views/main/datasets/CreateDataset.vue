@@ -55,91 +55,88 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {dispatchCreateDataset, dispatchGetDatasets} from '@/store/actions';
+import { dispatchCreateDataset, dispatchGetDatasets } from '@/store/actions';
+import { Component, Vue } from 'vue-property-decorator';
 
 // Import Vue FilePond
-import VueFilePond from 'vue-filepond';
-import {setOptions} from 'filepond';
+import { api } from '@/api';
+import { IDatasetCreate } from '@/interfaces';
+import { store } from '@/store';
+import { readToken } from '@/store/getters';
+import { setOptions } from 'filepond';
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
-import {api} from '@/api';
-import {readToken} from '@/store/getters';
-import {store} from '@/store';
-import {IDatasetCreate} from '@/interfaces';
-
+import VueFilePond from 'vue-filepond';
 
 const FilePond = VueFilePond();
 
-
 @Component({
-    components: {
-        FilePond,
-    },
+  components: {
+    FilePond,
+  },
 })
 export default class CreateDataset extends Vue {
-    public valid = true;
-    public loading = false;
-    public title: string = '';
-    public description?: string = '';
-    public fileIds: any[] = [];
+  public valid = true;
+  public loading = false;
+  public title: string = '';
+  public description?: string = '';
+  public fileIds: any[] = [];
 
-    public handleFilePondInit() {
-        // FilePond instance methods are available on `this.$refs.pond`
-        // console.log(this.$refs.pond);
+  public handleFilePondInit() {
+    // FilePond instance methods are available on `this.$refs.pond`
+    // console.log(this.$refs.pond);
+  }
+
+  public handleFilePondUploadFile(err, file) {
+    this.fileIds.push(parseInt(file.serverId, 10));
+  }
+
+  public async handleFilePondAddFile(err, file) {
+    if (this.title === '') {
+      this.title = file.filename;
+      this.description = (await file.file.text()).slice(0, 100);
     }
+  }
 
-    public handleFilePondUploadFile(err, file) {
-        this.fileIds.push(parseInt(file.serverId, 10));
+  public async mounted() {
+    setOptions({
+      server: {
+        url: api.uploadUrl,
+        ...api.authHeaders(readToken(store)),
+      },
+    });
+    await dispatchGetDatasets(this.$store);
+
+    this.reset();
+  }
+
+  public reset() {
+    this.title = '';
+    this.description = '';
+    this.fileIds = [];
+    this.loading = false;
+    this.$validator.reset();
+  }
+
+  public cancel() {
+    this.$router.back();
+  }
+
+  public async submit() {
+    if (await this.$validator.validateAll()) {
+      const createdDataset: IDatasetCreate = {
+        title: this.title,
+        description: '',
+        file_ids: this.fileIds,
+      };
+      if (this.description) {
+        createdDataset.description = this.description;
+      }
+      // TODO(max): on failure files don't get deleted server side
+      await dispatchCreateDataset(this.$store, createdDataset);
+      await this.$router.push('/main/datasets');
     }
-
-    public async handleFilePondAddFile(err, file) {
-        if (this.title === '') {
-            this.title = file.filename;
-            this.description = (await file.file.text()).slice(0, 100);
-        }
-    }
-
-    public async mounted() {
-        setOptions({
-            server: {
-                url: api.uploadUrl,
-                ...api.authHeaders(readToken(store)),
-            },
-        });
-        await dispatchGetDatasets(this.$store);
-
-        this.reset();
-    }
-
-    public reset() {
-        this.title = '';
-        this.description = '';
-        this.fileIds = [];
-        this.loading = false;
-        this.$validator.reset();
-    }
-
-    public cancel() {
-        this.$router.back();
-    }
-
-    public async submit() {
-        if (await this.$validator.validateAll()) {
-            const createdDataset: IDatasetCreate = {
-                title: this.title,
-                description: '',
-                file_ids: this.fileIds,
-            };
-            if (this.description) {
-                createdDataset.description = this.description;
-            }
-            // TODO(max): on failure files don't get deleted server side
-            await dispatchCreateDataset(this.$store, createdDataset);
-            await this.$router.push('/main/datasets');
-
-        }
-    }
+  }
 }
 </script>
 

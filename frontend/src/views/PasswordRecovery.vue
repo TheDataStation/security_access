@@ -31,23 +31,23 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {appName} from '@/env';
-import {dispatchPasswordRecovery} from '@/store/actions';
+import { appName } from '@/env';
+import { dispatchPasswordRecovery } from '@/store/actions';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Login extends Vue {
-    public valid = true;
-    public username: string = '';
-    public appName = appName;
+  public valid = true;
+  public username: string = '';
+  public appName = appName;
 
-    public cancel() {
-        this.$router.back();
-    }
+  public cancel() {
+    this.$router.back();
+  }
 
-    public submit() {
-        dispatchPasswordRecovery(this.$store, {username: this.username});
-    }
+  public submit() {
+    dispatchPasswordRecovery(this.$store, { username: this.username });
+  }
 }
 </script>
 

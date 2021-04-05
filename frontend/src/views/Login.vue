@@ -37,24 +37,27 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {appName} from '@/env';
-import {readLoginError} from '@/store/getters';
-import {dispatchLogIn} from '@/store/actions';
+import { appName } from '@/env';
+import { dispatchLogIn } from '@/store/actions';
+import { readLoginError } from '@/store/getters';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Login extends Vue {
-    public email: string = '';
-    public password: string = '';
-    public appName = appName;
+  public email: string = '';
+  public password: string = '';
+  public appName = appName;
 
-    public get loginError() {
-        return readLoginError(this.$store);
-    }
+  public get loginError() {
+    return readLoginError(this.$store);
+  }
 
-    public submit() {
-        dispatchLogIn(this.$store, {username: this.email, password: this.password});
-    }
+  public submit() {
+    dispatchLogIn(this.$store, {
+      username: this.email,
+      password: this.password,
+    });
+  }
 }
 </script>
 

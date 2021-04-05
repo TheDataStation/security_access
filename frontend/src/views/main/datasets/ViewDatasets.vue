@@ -28,51 +28,51 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import {readDatasets} from '@/store/getters';
-import {dispatchGetDatasets} from '@/store/actions';
+import { dispatchGetDatasets } from '@/store/actions';
+import { readDatasets } from '@/store/getters';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Datasets extends Vue {
-    public headers = [
-        {
-            text: 'id',
-            sortable: true,
-            value: 'id',
-            align: 'left',
-        },
-        {
-            text: 'Created at',
-            sortable: true,
-            value: 'created_at',
-            align: 'left',
-        },
-        {
-            text: 'Title',
-            sortable: true,
-            value: 'title',
-            align: 'left',
-        },
-        {
-            text: 'Description',
-            sortable: true,
-            value: 'description',
-            align: 'left',
-        },
-        {
-            text: 'File IDs',
-            sortable: true,
-            value: 'file_ids',
-            align: 'left',
-        },
-    ];
+  public headers = [
+    {
+      text: 'id',
+      sortable: true,
+      value: 'id',
+      align: 'left',
+    },
+    {
+      text: 'Created at',
+      sortable: true,
+      value: 'created_at',
+      align: 'left',
+    },
+    {
+      text: 'Title',
+      sortable: true,
+      value: 'title',
+      align: 'left',
+    },
+    {
+      text: 'Description',
+      sortable: true,
+      value: 'description',
+      align: 'left',
+    },
+    {
+      text: 'File IDs',
+      sortable: true,
+      value: 'file_ids',
+      align: 'left',
+    },
+  ];
 
-    get datasets() {
-        return readDatasets(this.$store);
-    }
+  get datasets() {
+    return readDatasets(this.$store);
+  }
 
-    public async mounted() {
-        await dispatchGetDatasets(this.$store);
-    }
+  public async mounted() {
+    await dispatchGetDatasets(this.$store);
+  }
 }
 </script>

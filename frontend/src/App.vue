@@ -20,24 +20,23 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
 import NotificationsManager from '@/components/NotificationsManager.vue';
-import {readIsLoggedIn} from '@/store/getters';
-import {dispatchCheckLoggedIn} from '@/store/actions';
+import { dispatchCheckLoggedIn } from '@/store/actions';
+import { readIsLoggedIn } from '@/store/getters';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
-    components: {
-        NotificationsManager,
-    },
+  components: {
+    NotificationsManager,
+  },
 })
 export default class App extends Vue {
+  get loggedIn() {
+    return readIsLoggedIn(this.$store);
+  }
 
-    get loggedIn() {
-        return readIsLoggedIn(this.$store);
-    }
-
-    public async created() {
-        await dispatchCheckLoggedIn(this.$store);
-    }
+  public async created() {
+    await dispatchCheckLoggedIn(this.$store);
+  }
 }
 </script>
