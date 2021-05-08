@@ -24,11 +24,11 @@
                         disabled
                         label="Decision reason"
                     ></v-textarea>
-                    <v-switch
-                        v-model="revealSharer"
-                        label="Reveal sharer"
-                        disabled
-                    ></v-switch>
+<!--                    <v-switch-->
+<!--                        v-model="revealSharer"-->
+<!--                        label="Reveal sharer"-->
+<!--                        disabled-->
+<!--                    ></v-switch>-->
                 </template>
             </v-card-text>
             <v-card-actions>
