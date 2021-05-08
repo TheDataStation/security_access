@@ -6,4 +6,5 @@
 ![alt text](edit_query.png)
 ![alt text](manage_queries.png)
 ![alt text](view_access_grant.png)
+![alt text](submitting_query.gif)
 
